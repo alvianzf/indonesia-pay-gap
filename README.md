@@ -1,6 +1,16 @@
 # Indonesia Wage & Pay-Gap Explorer
 
+**Live: [id-paygap.alvianzf.id](https://id-paygap.alvianzf.id/)**
+
 Interactive map + datatables + analytics of Indonesia's 2026 minimum wages (UMP/UMK) across all 38 provinces and 517 kabupaten/kota, with a "pay-gap" view comparing local UMK against the best available wage-income reference.
+
+## Features
+
+- Choropleth map (province or kabupaten/kota granularity) colored by pay-gap category — far above / moderately above / barely above / below UMK, or no data
+- Click any region to open its own detail page: mini map, KPIs, wage comparison chart, UMK history trend, sibling-region table
+- Sortable, searchable, paginated datatable with province/category filters that also drive the map (dims non-matches, recenters to the filtered set)
+- National analytics: category distribution, province UMP-vs-avg-wage comparison, top/bottom 10 UMK rankings
+- Quick-search jump box, full SEO metadata (OG/Twitter cards, JSON-LD, sitemap)
 
 ## Run it
 
