@@ -4,6 +4,18 @@
 
 Interactive map + datatables + analytics of Indonesia's 2026 minimum wages (UMP/UMK) across all 38 provinces and 517 kabupaten/kota, with a "pay-gap" view comparing local UMK against the best available wage-income reference.
 
+## Why this exists
+
+Indonesia sets minimum wages independently for 38 provinces and 517 kabupaten/kota — a nearly 3x spread, from ~Rp2.3 million to ~Rp6.0 million a month — and no single official source presents them together, let alone interactively. Every year's UMK/UMP list ships as static news tables scattered across dozens of local outlets (see the 70+ sources cited in `data/umk_source.json`), re-typed by hand every time someone wants to compare two regions.
+
+That fragmentation hides a more useful question: is the legal minimum actually close to what people are typically paid? BPS publishes average wages, but only per province and only for specific survey rounds — nobody merges that with the minimum-wage list to ask "where has UMK outpaced real pay, and where is there room?" This app does that merge and surfaces the answer directly as a pay-gap category per region (below / barely / moderately / far above UMK) — a proxy, not a precise local figure; see the limitations below.
+
+**Useful for:**
+- **Employers/HR** scoping where to open a facility, or benchmarking local pay before it's mandated
+- **Journalists & researchers** covering regional wage inequality without manually cross-referencing dozens of news articles
+- **Policy and labor-council watchers** comparing how a province's kabupaten diverge from its own UMP
+- **Workers and job-seekers** checking their region's minimum wage against neighboring areas
+
 ## Features
 
 - Choropleth map (province or kabupaten/kota granularity) colored by pay-gap category — far above / moderately above / barely above / below UMK, or no data
