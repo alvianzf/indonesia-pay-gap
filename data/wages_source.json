@@ -1,0 +1,1385 @@
+{
+  "description": "Average (mean) monthly net wage/salary (Rata-rata Upah/Gaji Bersih Sebulan Buruh/Karyawan/Pegawai) by Indonesian province, sourced primarily from BPS (Badan Pusat Statistik) Sakernas labor force survey data as re-reported by secondary aggregators (Databoks/Katadata, GoodStats, CEIC), since BPS's own bps.go.id statistics-table pages render their data tables via client-side JavaScript/API calls that were not accessible to this research pass.",
+  "currency": "IDR",
+  "unit": "per month, net wage/salary (buruh/karyawan/pegawai - i.e. employees, not the self-employed)",
+  "last_updated": "2026-09-02",
+  "sources": [
+    "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+    "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+    "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+    "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+    "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+    "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+    "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+    "https://finance.detik.com/berita-ekonomi-bisnis/d-8018512/terungkap-segini-rata-rata-gaji-pekerja-di-ri",
+    "https://www.bps.go.id/id/pressrelease/2025/05/05/2432/tingkat-pengangguran-terbuka--tpt--sebesar-4-76-persen--rata-rata-upah-buruh-sebesar-3-09-juta-rupiah-.html",
+    "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+    "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+    "https://databoks.katadata.co.id/en/employment/statistics/690d4cc938e89/average-employee-salary-in-38-provinces-of-indonesia-august-2025",
+    "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+    "https://www.cnbcindonesia.com/news/20220510172009-4-337913/ini-wilayah-dengan-upah-tertinggi-di-indonesia",
+    "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+    "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+    "https://www.tempo.co/ekonomi/next-indonesia-beberkan-upah-rata-rata-di-17-provinsi-masih-di-bawah-ump--1334508",
+    "https://databoks.katadata.co.id/ketenagakerjaan/statistik/05b221f939f6091/rata-rata-upah-buruh-tumbuh-112-pada-februari-2022"
+  ],
+  "notes": "IMPORTANT LIMITATIONS (updated after a second research pass on 2026-09-02):\n1. COVERAGE HISTORY. BPS (bps.go.id) publishes a comprehensive 'Rata-rata Upah/Gaji Bersih Sebulan Buruh/Karyawan/Pegawai Menurut Provinsi' table covering all provinces and going back to at least 2008 (semi-annual Sakernas rounds, February and August each year), but the bps.go.id 'statistics-table' pages that host this data are rendered client-side via JavaScript against an internal API (base64-encoded variable IDs, e.g. '.../statistics-table/2/NTgzIzI=/...') that requires either a registered BPS Web API key or a JS-executing browser to read; this remained inaccessible in both research passes (bps.go.id is also unreachable via direct HTTP fetch from this environment due to network/proxy policy, and WebFetch only returns the page shell, not the JS-rendered table). A second pass (2026-09-02) tried provincial BPS subdomains (jateng.bps.go.id, jatim.bps.go.id, etc. - same client-side rendering problem, no static HTML or fetchable PDF/Excel table found), ILOSTAT (ilostat.ilo.org - returned HTTP 403 to WebFetch), Trading Economics/Statista/Focus Economics (no free province-level tables found beyond national figures), academic/World Bank/ADB papers (found general Indonesian wage-inequality literature, e.g. ADB working papers on minimum wages and the gender wage gap, but none with a usable province x year appendix table of mean wages), and Kemnaker's satudata portal (not fetchable). The productive new avenue was searching Databoks/Katadata's 'multiple data' and individual statistic pages more exhaustively, which turned up (a) a genuine full 38-province matrix for Agustus 2025 (two near-identical Databoks articles cross-checking each other), (b) a third, later-dated Databoks article ('November 2025') that appears to re-report the same Agustus 2025 round with slightly different rounded figures for 10 provinces, (c) scattered but new individual province/year points for Februari 2022, Februari 2023, and Agustus 2024 from CNBC Indonesia, detik.com, GoodStats and Tempo articles. As a result every one of the 38 provinces now has at least one Agustus 2025 data point, and several provinces (Jakarta, Kepulauan Riau, Kalimantan Timur, Papua, Papua Tengah, Banten, Jawa Barat, Papua Barat) now have a near-complete Feb/Aug run from 2022 through 2026. Coverage for 2010-2018 remains completely absent at the province level after both passes (BPS's CEIC-hosted series confirms national semi-annual data exists back to February 2008, with a national low of Rp1,126,790/month in Feb 2008 and Rp2,829,130 in Aug 2018, but no province breakdown for that period was found through any research path tried). To get a genuinely complete province x year matrix back to 2008, someone with a BPS Web API key (see webapi.bps.go.id) or a JS-capable browser/headless-Chrome tool should pull table var_id 583 ('rata-rata upah/gaji bersih sebulan buruh/karyawan/pegawai menurut provinsi dan jenis pekerjaan utama') directly from bps.go.id, which appears to hold the full time series and full province list in one place; that remains untried by both research passes.\n2. MEDIAN WAGE DATA IS STILL NOT AVAILABLE. The second pass specifically re-searched for median wage figures (combining 'median upah/gaji buruh Indonesia' with ILO, World Bank, and BPS/Sakernas full-report PDF searches, e.g. 'Keadaan Angkatan Kerja Indonesia [year] BPS pdf'). BPS's Sakernas-based publications, at both the national and province level, report only the MEAN (rata-rata/average), not the median; no ILO, World Bank, Kemnaker, or academic source was found that publishes a province-by-province median monthly wage series for Indonesia comparable in coverage to the mean series. Accordingly every 'median_wage' field in this file is still null; no median figures were fabricated or estimated.\n3. FIGURE DEFINITION CAVEATS: values are 'buruh/karyawan/pegawai' (employees) net wage/salary, which is NOT the same as UMP/UMK legal minimum wage (a separate dataset) and not the same as average income across all workers including self-employed/informal workers (a few secondary articles conflated these; where a source gave two different numbers for the same province/period - e.g. an 'overall worker' figure vs an 'employee' figure - this file uses the employee/buruh figure to stay consistent with BPS's own table title).\n4. KNOWN CROSS-SOURCE DISCREPANCIES (kept as separate data points rather than resolved, since no BPS primary source could be checked): (a) FEBRUARY 2026 - two Databoks articles reporting what appears to be the same Sakernas February 2026 round give different values for several provinces (e.g. DKI Jakarta Rp5.23 juta in an article published ~March 2026 vs Rp5.74 juta in one published in May 2026; Kalimantan Timur Rp4.56 juta vs Rp4.72 juta); Papua Tengah's figure (Rp5.09 juta) matches exactly across both. (b) AGUSTUS 2025 - a Databoks article headlined 'November 2025' reports figures for Jakarta and the Papua/Kepri/Kaltim/Banten cluster that are close to but not identical to the two August-published Databoks articles for the same Sakernas round (e.g. DKI Jakarta Rp5.81 juta vs Rp5.90 juta); this may be a revision or a different rounding pass of the same release. (c) SUMATERA UTARA AGUSTUS 2025 - Rp2,810,000 (GoodStats) vs Rp2,820,000 (Databoks), a Rp10,000 rounding-level discrepancy.\n5. NATIONAL AVERAGE CROSS-CHECKS (for context, not a province): Feb 2022 ~Rp2.89 juta; Feb 2023 ~Rp2.94 juta; Aug 2023 ~Rp3.18 juta; Feb 2024 ~Rp3.04 juta; Aug 2024 Rp3.27 juta (BPS press release); Feb 2025 Rp3,094,818 (BPS press release, matches Databoks); Aug 2025 ~Rp3.29-3.33 juta (two sources differ slightly); Feb 2026 ~Rp3.29 juta (early report) / ~Rp3.39 juta (May 2026 report).\n6. PROVINCE COUNT: the 'provinces' list below includes all 38 currently-recognized provinces, and after this pass every one of them has at least one data point (Agustus 2025, at minimum). The four new Papua provinces (Papua Selatan, Papua Tengah, Papua Pegunungan, Papua Barat Daya) did not exist before 2022-2023 and have no pre-split data; Kalimantan Utara did not exist before 2012/2013. No data was fabricated for any province for years before it existed.\n7. WEAKEST REMAINING SPOTS: (a) no province-year data at all before 2019; (b) 2019 has only 6 provinces (Februari round only, from a single CEIC summary), 2020/2021 have zero province-level points (only a national Agustus 2020 threshold statistic mentioning Jakarta/Kepri/Papua exists, not usable as clean province data points and so not added); (c) Agustus 2024 and Februari 2024 each cover only 10 of 38 provinces; (d) Februari 2026 and the 'reported May 2026' round each cover only 11 of 38 provinces. Agustus 2025 is the only round with near-complete (38/38) province coverage.",
+  "provinces": [
+    {
+      "province": "Aceh",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2840000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 2600000,
+          "median_wage": null,
+          "source": "https://www.tempo.co/ekonomi/next-indonesia-beberkan-upah-rata-rata-di-17-provinsi-masih-di-bawah-ump--1334508",
+          "confidence": "single_source",
+          "note": "Reported only to 1 decimal (Rp 2.6 juta); precision is lower than other entries."
+        }
+      ]
+    },
+    {
+      "province": "Sumatera Utara",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2810000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2820000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Existing entry from GoodStats gives Rp2,810,000 for the same round; this Databoks figure (Rp2,820,000) is treated as a corroborating/near-identical rounding variant, not a conflicting one."
+        }
+      ]
+    },
+    {
+      "province": "Sumatera Barat",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2910000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2022,
+          "period": "Februari 2022",
+          "average_wage": 2536968,
+          "median_wage": null,
+          "source": "https://www.cnbcindonesia.com/news/20220510172009-4-337913/ini-wilayah-dengan-upah-tertinggi-di-indonesia",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Riau",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3140000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Jambi",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2980000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Sumatera Selatan",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3020000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        },
+        {
+          "year": 2022,
+          "period": "Februari 2022",
+          "average_wage": 2631668,
+          "median_wage": null,
+          "source": "https://www.cnbcindonesia.com/news/20220510172009-4-337913/ini-wilayah-dengan-upah-tertinggi-di-indonesia",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Bengkulu",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2940000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Lampung",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2520000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 2320000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Kepulauan Bangka Belitung",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3200000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Kepulauan Riau",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 4651057,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 4140000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa"
+        },
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4442582,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4740000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 4740000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 4920000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 4770000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 4911036,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4780000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ]
+    },
+    {
+      "province": "DKI Jakarta",
+      "data": [
+        {
+          "year": 2019,
+          "period": "Februari 2019",
+          "average_wage": 4486487,
+          "median_wage": null,
+          "source": "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 5532624,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 5070000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa"
+        },
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 5245339,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4880000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "corroborated"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 5230000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 5740000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 5900000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        },
+        {
+          "year": 2022,
+          "period": "Februari 2022",
+          "average_wage": 5589155,
+          "median_wage": null,
+          "source": "https://www.cnbcindonesia.com/news/20220510172009-4-337913/ini-wilayah-dengan-upah-tertinggi-di-indonesia",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 5806940,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "corroborated",
+          "note": "Confirmed (to 1 decimal, Rp5.8 juta) by https://www.tempo.co/ekonomi/next-indonesia-beberkan-upah-rata-rata-di-17-provinsi-masih-di-bawah-ump--1334508"
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 5810000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ]
+    },
+    {
+      "province": "Jawa Barat",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 3674236,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 3710000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3770000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3330000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 3800000,
+          "median_wage": null,
+          "source": "https://www.tempo.co/ekonomi/next-indonesia-beberkan-upah-rata-rata-di-17-provinsi-masih-di-bawah-ump--1334508",
+          "confidence": "single_source",
+          "note": "Reported only to 1 decimal (Rp 3.8 juta); precision is lower than other entries."
+        }
+      ]
+    },
+    {
+      "province": "Jawa Tengah",
+      "data": [
+        {
+          "year": 2019,
+          "period": "Februari 2019",
+          "average_wage": 2146992,
+          "median_wage": null,
+          "source": "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 2170000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2530000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 2460000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 2405447,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "DI Yogyakarta",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2920000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Jawa Timur",
+      "data": [
+        {
+          "year": 2019,
+          "period": "Februari 2019",
+          "average_wage": 2286863,
+          "median_wage": null,
+          "source": "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2900000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        }
+      ]
+    },
+    {
+      "province": "Banten",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 4378058,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4373788,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4170000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 4200000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 4760000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 4060000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3730000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 4392768,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4030000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ]
+    },
+    {
+      "province": "Bali",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 3380840,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 4060000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 3820000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3640000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Nusa Tenggara Barat",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2570000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 2380000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 2365102,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Nusa Tenggara Timur",
+      "data": [
+        {
+          "year": 2019,
+          "period": "Februari 2019",
+          "average_wage": 2208879,
+          "median_wage": null,
+          "source": "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 2140000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2670000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 2340000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 2500000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 2370111,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Kalimantan Barat",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2970000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Kalimantan Tengah",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 3323457,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3450000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3120000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Kalimantan Selatan",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3160000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Kalimantan Timur",
+      "data": [
+        {
+          "year": 2019,
+          "period": "Februari 2019",
+          "average_wage": 3822732,
+          "median_wage": null,
+          "source": "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 4068893,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4234455,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4440000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 4560000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 4720000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 4480000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3940000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 4400771,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4520000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ]
+    },
+    {
+      "province": "Kalimantan Utara",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 3599653,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 3625922,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4360000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 3960000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 3930000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3680000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3550000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        }
+      ],
+      "existence_note": "Formed 2012/2013 by splitting off from Kalimantan Timur; no data exists before that."
+    },
+    {
+      "province": "Sulawesi Utara",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3420000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3210000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Sulawesi Tengah",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3060000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Sulawesi Selatan",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3060000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Sulawesi Tenggara",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3190000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Gorontalo",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2910000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        }
+      ]
+    },
+    {
+      "province": "Sulawesi Barat",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 2110000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 2700000,
+          "median_wage": null,
+          "source": "https://data.goodstats.id/statistic/10-provinsi-dengan-upah-buruh-terendah-per-agustus-2025-eX6uX",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025 (average net salary of employees in 38 provinces of Indonesia, August 2025)."
+        },
+        {
+          "year": 2022,
+          "period": "Februari 2022",
+          "average_wage": 2164365,
+          "median_wage": null,
+          "source": "https://www.cnbcindonesia.com/news/20220510172009-4-337913/ini-wilayah-dengan-upah-tertinggi-di-indonesia",
+          "confidence": "single_source"
+        }
+      ]
+    },
+    {
+      "province": "Maluku",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3100000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Maluku Utara",
+      "data": [
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 3670000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3620000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        }
+      ]
+    },
+    {
+      "province": "Papua Barat",
+      "data": [
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 3601390,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3770000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "single_source",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks."
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 3300000,
+          "median_wage": null,
+          "source": "https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 3840000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ]
+    },
+    {
+      "province": "Papua",
+      "data": [
+        {
+          "year": 2019,
+          "period": "Februari 2019",
+          "average_wage": 3907698,
+          "median_wage": null,
+          "source": "https://www.ceicdata.com/en/indonesia/monthly-average-wage-net-by-province",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Agustus 2023",
+          "average_wage": 4420390,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/4866850ac1e5cba/ini-10-provinsi-dengan-upah-buruh-tertinggi-nasional-pada-agustus-2023",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2023,
+          "period": "Februari 2023",
+          "average_wage": 4150000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/1e3bbef32a89ee1/berikut-besaran-rata-rata-upah-buruh-di-indonesia-pada-februari-2023-terbesar-sektor-real-estat",
+          "confidence": "corroborated",
+          "note": "Confirmed by second source: https://www.detik.com/jabar/bisnis/d-6705797/daftar-rata-rata-upah-di-tiap-provinsi-jawa-barat-urutan-berapa"
+        },
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4559275,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 3980000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 4330000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 4360000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 4430000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4300000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ]
+    },
+    {
+      "province": "Papua Selatan",
+      "data": [
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4464615,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 3870000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 3850000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 4270000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4280000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ],
+      "existence_note": "New province split off from Papua in 2022-2023 (Sakernas coverage begins ~2023)."
+    },
+    {
+      "province": "Papua Tengah",
+      "data": [
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4436017,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4750000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 5090000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 5090000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "corroborated"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 4810000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2024,
+          "period": "Agustus 2024",
+          "average_wage": 5071157,
+          "median_wage": null,
+          "source": "https://goodstats.id/article/provinsi-dengan-rata-rata-upah-buruh-terbesar-2024-Pkbys",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4870000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ],
+      "existence_note": "New province split off from Papua in 2022-2023 (Sakernas coverage begins ~2023)."
+    },
+    {
+      "province": "Papua Pegunungan",
+      "data": [
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 4556451,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Februari 2025",
+          "average_wage": 4130000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/68197825a58cd/rata-rata-upah-buruh-di-38-provinsi-indonesia-awal-2025",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2026,
+          "period": "Februari 2026 (early report, ~March 2026)",
+          "average_wage": 4310000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/69fa926f9ce1f/average-labor-wages-in-38-indonesian-provinces-in-early-2026-jakarta-the-highest",
+          "confidence": "single_source",
+          "note": "See notes field: a later Databoks article (May 2026) reports a different figure for this province/period; both are kept as separate corroborating/conflicting data points."
+        },
+        {
+          "year": 2026,
+          "period": "Sakernas Feb 2026, as reported by Databoks in May 2026",
+          "average_wage": 4720000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/6a73dc3cb9fce/jakarta-provinsi-dengan-rata-rata-upah-buruh-tertinggi-pada-mei-2026",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3940000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 4050000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ],
+      "existence_note": "New province split off from Papua in 2022-2023 (Sakernas coverage begins ~2023)."
+    },
+    {
+      "province": "Papua Barat Daya",
+      "data": [
+        {
+          "year": 2024,
+          "period": "Februari 2024",
+          "average_wage": 3717604,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/ketenagakerjaan/statistik/b6fc0dd84deeaf3/10-provinsi-dengan-rerata-upah-buruh-tertinggi-nasional-awal-2024-dki-jakarta-teratas",
+          "confidence": "single_source"
+        },
+        {
+          "year": 2025,
+          "period": "Agustus 2025",
+          "average_wage": 3840000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/695225c6e7d9f/average-net-salary-of-employees-in-38-provinces-of-indonesia-in-august-2025",
+          "confidence": "corroborated",
+          "note": "Reported to 3 significant figures (Rp X.XX juta) by Databoks; corroborated where a second Databoks article (same round) lists a matching figure."
+        },
+        {
+          "year": 2025,
+          "period": "Sakernas Agustus 2025, as reported by Databoks in November 2025",
+          "average_wage": 3870000,
+          "median_wage": null,
+          "source": "https://databoks.katadata.co.id/en/employment/statistics/6985630cf3db5/jakarta-the-indonesian-province-with-the-highest-average-salary-in-november-2025",
+          "confidence": "single_source",
+          "note": "Article headline references 'November 2025' but appears to re-report the same Agustus 2025 Sakernas round as the August-dated Databoks articles, with slightly different rounded figures (e.g. DKI Jakarta Rp5.81 juta here vs Rp5.90 juta in the August-published article). Not confirmed against a BPS primary source; kept as a separate data point rather than merged, consistent with how the file already handles the analogous Februari 2026 discrepancy."
+        }
+      ],
+      "existence_note": "New province split off from Papua Barat in 2022-2023 (Sakernas coverage begins ~2023)."
+    }
+  ]
+}

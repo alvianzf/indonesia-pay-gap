@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Indonesia Wage &amp; Pay-Gap Explorer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">Indonesia Wage &amp; Pay-Gap Explorer</a>
+    <div class="topbar-right">
+      <input id="quick-search" class="quick-search" type="text" placeholder="Jump to a kabupaten/kota…" autocomplete="off" />
+      <div id="quick-search-results" class="quick-search-results" hidden></div>
+    </div>
+  </header>
+  <main id="app"></main>
+  <footer class="site-footer">
+    UMK/UMP 2026 and BPS Sakernas average-wage data, merged with public GeoJSON administrative boundaries (BIG). See methodology on the home page for data-coverage caveats.
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
