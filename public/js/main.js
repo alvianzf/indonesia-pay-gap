@@ -5,7 +5,19 @@ import { debounce } from './utils.js';
 
 const app = document.getElementById('app');
 
+const SPINNER_HTML = `
+  <div class="spinner-wrap">
+    <div class="spinner"></div>
+    <div>Loading wage &amp; map data…</div>
+  </div>
+`;
+
+function showSpinner() {
+  app.innerHTML = SPINNER_HTML;
+}
+
 async function route() {
+  showSpinner();
   const hash = window.location.hash || '#/';
   const [path, queryStr] = hash.slice(2).split('?');
   window.scrollTo(0, 0);
@@ -28,6 +40,7 @@ async function route() {
 
 window.addEventListener('hashchange', route);
 window.addEventListener('DOMContentLoaded', async () => {
+  showSpinner();
   await setupQuickSearch();
   route();
 });
