@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alvianzf.github.io/indonesia-pay-gap/sitemap.xml

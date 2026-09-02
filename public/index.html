@@ -3,11 +3,54 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Indonesia Wage &amp; Pay-Gap Explorer</title>
+
+  <title>Indonesia UMP/UMK 2026 Map &amp; Pay-Gap Explorer</title>
+  <meta name="description" content="Interactive map of Indonesia's 2026 minimum wages (UMP/UMK) across all 38 provinces and 517 kabupaten/kota, with a pay-gap view comparing local UMK against average wages, sortable/searchable datatables, and wage analytics." />
+  <meta name="keywords" content="UMP 2026, UMK 2026, upah minimum Indonesia, peta UMK, pay gap, minimum wage Indonesia, kabupaten kota, BPS Sakernas, gaji rata-rata" />
+  <meta name="author" content="Indonesia Wage & Pay-Gap Explorer" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://alvianzf.github.io/indonesia-pay-gap/" />
+
+  <!-- Open Graph / Facebook, WhatsApp, Slack unfurls -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Indonesia Wage & Pay-Gap Explorer" />
+  <meta property="og:title" content="Indonesia UMP/UMK 2026 Map & Pay-Gap Explorer" />
+  <meta property="og:description" content="Interactive map of Indonesia's 2026 minimum wages across all 38 provinces and 517 kabupaten/kota, with a pay-gap view, datatables, and analytics." />
+  <meta property="og:url" content="https://alvianzf.github.io/indonesia-pay-gap/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="id_ID" />
+
+  <!-- Twitter / X card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Indonesia UMP/UMK 2026 Map & Pay-Gap Explorer" />
+  <meta name="twitter:description" content="Interactive map of Indonesia's 2026 minimum wages across all 38 provinces and 517 kabupaten/kota, with a pay-gap view, datatables, and analytics." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%97%BA%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Indonesia UMP/UMK 2026 Minimum Wage & Pay-Gap Dataset",
+    "description": "2026 provincial (UMP) and kabupaten/kota (UMK) minimum wages for Indonesia, merged with BPS Sakernas average-wage data and administrative boundaries, presented as an interactive map, datatables, and pay-gap analytics.",
+    "url": "https://alvianzf.github.io/indonesia-pay-gap/",
+    "keywords": ["UMP 2026", "UMK 2026", "Indonesia minimum wage", "pay gap", "BPS Sakernas"],
+    "license": "https://opensource.org/licenses/MIT",
+    "spatialCoverage": "Indonesia"
+  }
+  </script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <noscript>
+    <p style="max-width:640px;margin:40px auto;font-family:sans-serif;padding:0 20px">
+      This page needs JavaScript enabled. It shows an interactive map, datatables, and analytics of
+      Indonesia's 2026 minimum wages (UMP/UMK) across all 38 provinces and 517 kabupaten/kota, including
+      a pay-gap comparison against average wages.
+    </p>
+  </noscript>
   <header class="topbar">
     <a class="brand" href="#/">Indonesia Wage &amp; Pay-Gap Explorer</a>
     <div class="topbar-right">
