@@ -83,8 +83,8 @@ export async function renderDetail(container, regionId) {
   const povertyVerdictInfo = livingCostVerdict(umkToPoverty, 'poverty');
 
   const kpiGrid = el('div', { class: 'kpi-grid' }, [
-    kpi(rupiah(region.umk2026), region.usesUmpFallback ? 'UMP 2026 (applies here)' : 'UMK 2026'),
-    kpi(rupiah(province.ump2026), 'Province UMP 2026'),
+    kpi(rupiah(region.umk2026), region.usesUmpFallback ? 'UMP 2026 (applies here)' : 'UMK 2026', null, null, true),
+    kpi(rupiah(province.ump2026), 'Province UMP 2026', null, null, true),
     kpi(region.avgWageRef !== null ? rupiah(region.avgWageRef) : 'No data', `Province avg. wage${region.wagePeriod ? ' (' + region.wagePeriod + ')' : ''}`),
     kpi(region.ratio !== null ? pct(region.ratio) : '—', 'Avg wage ÷ UMK'),
     kpi('#' + rankInProvince + ' / ' + siblings.length, 'Rank in province (by UMK)'),
@@ -101,10 +101,22 @@ export async function renderDetail(container, regionId) {
     el('div', { id: 'detail-map' }),
   ]);
 
-  // itemized_cost_of_living_by_city covers 14/38 provinces; some (Jawa Timur,
-  // Jawa Barat) have 2 cities - the source lists the provincial capital first,
-  // so find() naturally picks the more representative one.
-  const numbeoEntry = data.merged.numbeoCities.find((c) => c.provinceId === region.provinceId) || null;
+  // itemized_cost_of_living_by_city covers 16 cities across 14 provinces.
+  // Prefer an EXACT match on the selected region first (e.g. selecting Kota
+  // Malang or Kota Bogor should show their own entry, not fall through to
+  // whichever city that province's source data happens to list first - which
+  // was the bug: it always picked Surabaya/Bandung for any Jawa Timur/Jawa
+  // Barat region). Only "kota" regions can exact-match: Numbeo's cities are
+  // proper cities, so a same-named "Kabupaten" (e.g. Kabupaten Bogor, which
+  // surrounds but is administratively distinct from Kota Bogor) must not
+  // claim a false exact match. Fall back to the province's first-listed city
+  // (its capital, per source order) as a "closest available" proxy.
+  const normCity = (s) => s.toLowerCase().replace(/^kota |^kabupaten /, '').replace(/[^a-z0-9]/g, '');
+  const exactNumbeoMatch = region.type === 'kota'
+    ? data.merged.numbeoCities.find((c) => normCity(c.city) === normCity(region.name)) || null
+    : null;
+  const numbeoEntry = exactNumbeoMatch || data.merged.numbeoCities.find((c) => c.provinceId === region.provinceId) || null;
+  const numbeoIsExact = exactNumbeoMatch !== null;
 
   container.appendChild(mapPanel);
 
@@ -124,7 +136,9 @@ export async function renderDetail(container, regionId) {
     numbeoEntry ? el('div', { class: 'panel' }, [
       el('h2', {}, `Sample local prices — ${numbeoEntry.city} (Numbeo)`),
       el('p', { style: 'font-size:11px;color:var(--text-dim);margin:0 0 10px' }, [
-        `Crowdsourced, not specific to ${region.name} — shown as the closest available city sample for ${region.provinceName}. `,
+        numbeoIsExact
+          ? `Crowdsourced Numbeo data specifically for ${region.name}. `
+          : `Crowdsourced, not specific to ${region.name} — shown as the closest available city sample for ${region.provinceName}. `,
         numbeoEntry.asOf ? `(${numbeoEntry.asOf}) ` : '',
         numbeoEntry.confidence || '',
       ]),
@@ -161,8 +175,8 @@ export async function renderDetail(container, regionId) {
   initDetailCharts(region, province, nationalAvgUmk, siblings);
 }
 
-function kpi(value, label, valueColor, verdict) {
-  return el('div', { class: 'kpi-card' }, [
+function kpi(value, label, valueColor, verdict, wide) {
+  return el('div', { class: 'kpi-card' + (wide ? ' wide' : '') }, [
     el('div', { class: 'value', style: valueColor ? `color:${valueColor};text-shadow:0 0 10px ${valueColor}80` : '' }, value),
     el('div', { class: 'label' }, label),
     verdict ? el('div', { class: 'kpi-verdict', style: `color:${valueColor}` }, verdict) : null,

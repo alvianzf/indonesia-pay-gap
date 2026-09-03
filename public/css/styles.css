@@ -121,6 +121,7 @@ main#app { max-width: 1400px; margin: 0 auto; padding: 20px 20px 40px; }
 .banner-details { margin-top: 8px; }
 
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.kpi-card.wide { grid-column: span 2; }
 .kpi-card {
   background: linear-gradient(180deg, var(--panel-raised), var(--panel));
   border: 1px solid var(--border); border-left: 3px solid var(--accent-dim);
