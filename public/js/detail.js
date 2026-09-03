@@ -85,14 +85,14 @@ export async function renderDetail(container, regionId) {
   const kpiGrid = el('div', { class: 'kpi-grid' }, [
     kpi(rupiah(region.umk2026), region.usesUmpFallback ? 'UMP 2026 (applies here)' : 'UMK 2026', null, null, true),
     kpi(rupiah(province.ump2026), 'Province UMP 2026', null, null, true),
-    kpi(region.avgWageRef !== null ? rupiah(region.avgWageRef) : 'No data', `Province avg. wage${region.wagePeriod ? ' (' + region.wagePeriod + ')' : ''}`),
-    kpi(region.ratio !== null ? pct(region.ratio) : '—', 'Avg wage ÷ UMK'),
-    kpi('#' + rankInProvince + ' / ' + siblings.length, 'Rank in province (by UMK)'),
-    kpi('#' + nationalRank + ' / ' + allSorted.length, 'National rank (by UMK)'),
-    kpi(effectiveKhl !== null ? rupiah(effectiveKhl) : 'No data', khlIsRegionLevel ? "This region's KHL (decent living)" : 'Province KHL (decent living)'),
-    kpi(umkToKhl !== null ? pct(umkToKhl) : '—', 'UMK ÷ KHL', khlVerdictInfo.color, khlVerdictInfo.label),
-    kpi(effectivePoverty !== null ? rupiah(effectivePoverty) : 'No data', povertyIsRegionLevel ? "This region's poverty line (BPS)" : 'Province poverty line (BPS)'),
-    kpi(umkToPoverty !== null ? pct(umkToPoverty) : '—', 'UMK ÷ poverty line', povertyVerdictInfo.color, povertyVerdictInfo.label),
+    kpi(region.avgWageRef !== null ? rupiah(region.avgWageRef) : 'No data', `Province avg. wage${region.wagePeriod ? ' (' + region.wagePeriod + ')' : ''}`, null, null, true),
+    kpi(region.ratio !== null ? pct(region.ratio) : '—', 'Avg wage ÷ UMK', null, null, true),
+    kpi('#' + rankInProvince + ' / ' + siblings.length, 'Rank in province (by UMK)', null, null, true),
+    kpi('#' + nationalRank + ' / ' + allSorted.length, 'National rank (by UMK)', null, null, true),
+    kpi(effectiveKhl !== null ? rupiah(effectiveKhl) : 'No data', khlIsRegionLevel ? "This region's KHL (decent living)" : 'Province KHL (decent living)', null, null, true),
+    kpi(umkToKhl !== null ? pct(umkToKhl) : '—', 'UMK ÷ KHL', khlVerdictInfo.color, khlVerdictInfo.label, true),
+    kpi(effectivePoverty !== null ? rupiah(effectivePoverty) : 'No data', povertyIsRegionLevel ? "This region's poverty line (BPS)" : 'Province poverty line (BPS)', null, null, true),
+    kpi(umkToPoverty !== null ? pct(umkToPoverty) : '—', 'UMK ÷ poverty line', povertyVerdictInfo.color, povertyVerdictInfo.label, true),
   ]);
   container.appendChild(kpiGrid);
 
