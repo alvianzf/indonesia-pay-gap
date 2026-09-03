@@ -82,7 +82,7 @@ export async function renderDetail(container, regionId) {
     kpi('#' + rankInProvince + ' / ' + siblings.length, 'Rank in province (by UMK)'),
     kpi('#' + nationalRank + ' / ' + allSorted.length, 'National rank (by UMK)'),
     kpi(province.khlTotal !== null ? rupiah(province.khlTotal) : 'No data', 'Province KHL (decent living needs)'),
-    kpi(umkToKhl !== null ? pct(umkToKhl) : '—', 'UMK ÷ KHL — ' + khlVerdictInfo.label, khlVerdictInfo.color),
+    kpi(umkToKhl !== null ? pct(umkToKhl) : '—', 'UMK ÷ KHL', khlVerdictInfo.color, khlVerdictInfo.label),
     kpi(province.povertyLine !== null ? rupiah(province.povertyLine) : 'No data', 'Province poverty line (BPS)'),
   ]);
   container.appendChild(kpiGrid);
@@ -102,9 +102,9 @@ export async function renderDetail(container, regionId) {
     ]),
     el('div', { class: 'panel' }, [
       el('h2', {}, 'Cost of living vs. pay (province level)'),
-      el('div', { class: 'chart-box' }, el('canvas', { id: 'chart-khl' })),
+      el('div', { class: 'gap-spectrum', html: buildGapSpectrumSvg(region, province) }),
       el('p', { style: 'font-size:11.5px;color:var(--text-dim);margin:10px 0 0' }, [
-        'KHL is Kemnaker\'s official "decent living needs" figure — the same benchmark wage councils use to set minimum wages. ',
+        'KHL is Kemnaker\'s official "decent living needs" figure — the same benchmark wage councils use to set minimum wages. Dot color = above (green) or below (red) that line. ',
         el('a', { href: '#/afford' }, 'Try the Salary Affordability tool →'),
       ]),
     ]),
@@ -145,10 +145,11 @@ export async function renderDetail(container, regionId) {
   initDetailCharts(region, province, nationalAvgUmk, siblings);
 }
 
-function kpi(value, label, valueColor) {
+function kpi(value, label, valueColor, verdict) {
   return el('div', { class: 'kpi-card' }, [
     el('div', { class: 'value', style: valueColor ? `color:${valueColor};text-shadow:0 0 10px ${valueColor}80` : '' }, value),
     el('div', { class: 'label' }, label),
+    verdict ? el('div', { class: 'kpi-verdict', style: `color:${valueColor}` }, verdict) : null,
   ]);
 }
 
@@ -174,6 +175,64 @@ function buildSiblingTable(siblings, currentId) {
   });
   table.appendChild(tbody);
   return table;
+}
+
+// Renders KHL/UMK/avg-wage as a reference-line dot plot rather than bars, so the
+// GAP between them reads as a distance/color on a shared axis instead of requiring
+// the viewer to mentally subtract bar heights. All text is clamped inside the
+// viewBox (clampX) so long Rupiah labels can never render outside the box.
+function buildGapSpectrumSvg(region, province) {
+  const khl = province.khlTotal;
+  const umk = region.umk2026;
+  const avgWage = region.avgWageRef;
+  const hasAvg = avgWage !== null;
+
+  const W = 640;
+  const ML = 26, MR = 26;
+  const trackX1 = ML, trackX2 = W - MR;
+  const rowUmkY = 96;
+  const rowAvgY = 160;
+  const khlLineTop = 40;
+  const khlLineBottom = (hasAvg ? rowAvgY : rowUmkY) + 26;
+  const axisY = khlLineBottom + 22;
+  const H = axisY + 22;
+
+  const maxVal = Math.max(khl, umk, avgWage || 0) * 1.15;
+  const scaleX = (v) => trackX1 + (v / maxVal) * (trackX2 - trackX1);
+  const clampX = (x, half) => Math.min(Math.max(x, trackX1 + half), trackX2 - half);
+  const pctDelta = (num, den) => { const p = Math.round((num / den - 1) * 100); return (p >= 0 ? '+' : '') + p + '%'; };
+
+  const xKHL = scaleX(khl);
+  const xUMK = clampX(scaleX(umk), 5);
+  const xAvg = hasAvg ? clampX(scaleX(avgWage), 5) : null;
+  const umkColor = umk >= khl ? '#2ee673' : '#ff3b5c';
+  const avgColor = hasAvg ? (COLORS[region.category] || COLORS.nodata) : null;
+  const khlLabelX = clampX(xKHL, 60);
+
+  const row = (y, x, color, name, valueText, deltaText) => `
+    <line x1="${trackX1}" y1="${y}" x2="${trackX2}" y2="${y}" stroke="#1c2a20" stroke-width="1.5" />
+    <circle cx="${x}" cy="${y}" r="7" fill="${color}" stroke="#03110a" stroke-width="1.5" />
+    <text x="${clampX(x, 70)}" y="${y - 16}" text-anchor="middle" font-size="13" font-weight="700" fill="${color}">${name} · ${valueText}</text>
+    <text x="${clampX(x, 70)}" y="${y + 24}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${color}">${deltaText}</text>
+  `;
+
+  const axisLabel = (x, v, anchor) => `<text x="${x}" y="${axisY}" text-anchor="${anchor}" font-size="10" fill="#6f9c82">${rupiahShort(v)}</text>`;
+
+  return `
+    <svg viewBox="0 0 ${W} ${H}" width="100%" height="auto" role="img" aria-label="Gap between KHL, UMK and average wage">
+      <style>text { font-family: 'Rajdhani', sans-serif; }</style>
+      <rect x="${trackX1}" y="${khlLineTop}" width="${xKHL - trackX1}" height="${khlLineBottom - khlLineTop}" fill="#ff3b5c" opacity="0.06" />
+      <rect x="${xKHL}" y="${khlLineTop}" width="${trackX2 - xKHL}" height="${khlLineBottom - khlLineTop}" fill="#2ee673" opacity="0.06" />
+      <line x1="${xKHL}" y1="${khlLineTop}" x2="${xKHL}" y2="${khlLineBottom}" stroke="#2ee673" stroke-width="1.5" stroke-dasharray="4 3" />
+      <text x="${khlLabelX}" y="${khlLineTop - 12}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2ee673">KHL (decent living) · ${rupiahShort(khl)}</text>
+      ${row(rowUmkY, xUMK, umkColor, 'UMK', rupiahShort(umk), pctDelta(umk, khl) + ' vs KHL')}
+      ${hasAvg ? row(rowAvgY, xAvg, avgColor, 'Avg. pay', rupiahShort(avgWage), pctDelta(avgWage, umk) + ' vs UMK') : ''}
+      <line x1="${trackX1}" y1="${axisY - 8}" x2="${trackX2}" y2="${axisY - 8}" stroke="#1c2a20" stroke-width="1" />
+      ${axisLabel(trackX1, 0, 'start')}
+      ${axisLabel((trackX1 + trackX2) / 2, maxVal / 2, 'middle')}
+      ${axisLabel(trackX2, maxVal, 'end')}
+    </svg>
+  `;
 }
 
 function buildNumbeoTable(entry) {
@@ -225,18 +284,6 @@ function initDetailCharts(region, province, nationalAvgUmk, siblings) {
   charts.push(new Chart(document.getElementById('chart-compare'), {
     type: 'bar',
     data: { labels, datasets: [{ data: values, backgroundColor: ['#39ff8f', '#4a6157', '#4a6157', '#4a6157', '#29c8ff'] }] },
-    options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => rupiahShort(v) } } } },
-  }));
-
-  const khlLabels = ['This region UMK'];
-  const khlValues = [region.umk2026];
-  const khlColors = ['#39ff8f'];
-  if (province.khlTotal !== null) { khlLabels.push('Province KHL'); khlValues.push(province.khlTotal); khlColors.push('#2ee673'); }
-  if (province.povertyLine !== null) { khlLabels.push('Province poverty line'); khlValues.push(province.povertyLine); khlColors.push('#ff3b5c'); }
-  if (region.avgWageRef !== null) { khlLabels.push('Province avg. wage'); khlValues.push(region.avgWageRef); khlColors.push('#29c8ff'); }
-  charts.push(new Chart(document.getElementById('chart-khl'), {
-    type: 'bar',
-    data: { labels: khlLabels, datasets: [{ data: khlValues, backgroundColor: khlColors }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => rupiahShort(v) } } } },
   }));
 
