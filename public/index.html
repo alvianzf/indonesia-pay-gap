@@ -40,6 +40,8 @@
   }
   </script>
 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -52,7 +54,8 @@
     </p>
   </noscript>
   <header class="topbar">
-    <a class="brand" href="#/">Indonesia Wage &amp; Pay-Gap Explorer</a>
+    <canvas id="matrix-rain" aria-hidden="true"></canvas>
+    <a class="brand" href="#/"><span class="brand-glyph">⌁</span> Indonesia Wage &amp; Pay-Gap Explorer</a>
     <nav class="topnav">
       <a href="#/">Map</a>
       <a href="#/afford">Salary Affordability</a>
@@ -75,5 +78,40 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
   <script type="module" src="js/main.js"></script>
+  <script>
+    (function () {
+      var canvas = document.getElementById('matrix-rain');
+      if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var ctx = canvas.getContext('2d');
+      var glyphs = 'アイウエオカキクケコサシスセソ01234567890<>/[]{}=+-';
+      var fontSize = 15;
+      var columns = 0, drops = [];
+
+      function resize() {
+        var rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = new Array(columns).fill(0).map(function () { return Math.random() * -40; });
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function tick() {
+        ctx.fillStyle = 'rgba(3, 8, 5, 0.18)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = fontSize + 'px Rajdhani, sans-serif';
+        for (var i = 0; i < columns; i++) {
+          var text = glyphs[Math.floor(Math.random() * glyphs.length)];
+          var y = drops[i] * fontSize;
+          ctx.fillStyle = y < fontSize * 2 ? 'rgba(180,255,210,0.85)' : 'rgba(0,255,120,0.35)';
+          ctx.fillText(text, i * fontSize, y);
+          if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }
+      setInterval(tick, 60);
+    })();
+  </script>
 </body>
 </html>

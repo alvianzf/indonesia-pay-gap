@@ -1,7 +1,7 @@
 import { loadData } from './store.js';
 import { rupiah, rupiahShort, pct, CATEGORY_LABEL, el } from './utils.js';
 
-const COLORS = { below: '#dc2626', barely: '#f59e0b', moderate: '#16a34a', far: '#2563eb', nodata: '#9ca3af' };
+const COLORS = { below: '#ff3b5c', barely: '#ffc233', moderate: '#2ee673', far: '#29c8ff', nodata: '#4a6157' };
 
 let mapInstance = null;
 let charts = [];
@@ -131,13 +131,13 @@ function buildSiblingTable(siblings, currentId) {
 
 function initDetailMap(data, region) {
   mapInstance = L.map('detail-map', { scrollWheelZoom: false }).setView([-2.3, 118], 5);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri', maxZoom: 16,
   }).addTo(mapInstance);
 
   const provFeatures = data.geoKab.features.filter((f) => f.properties.provinceId === region.provinceId);
   const context = L.geoJSON({ type: 'FeatureCollection', features: provFeatures }, {
-    style: (f) => ({ fillColor: f.properties.id === region.id ? COLORS[region.category] : '#d1d5db', weight: f.properties.id === region.id ? 2 : 0.5, color: f.properties.id === region.id ? '#111' : '#fff', fillOpacity: f.properties.id === region.id ? 0.85 : 0.5 }),
+    style: (f) => ({ fillColor: f.properties.id === region.id ? COLORS[region.category] : '#233229', weight: f.properties.id === region.id ? 2 : 0.5, color: f.properties.id === region.id ? '#39ff8f' : '#03110a', fillOpacity: f.properties.id === region.id ? 0.85 : 0.55 }),
     onEachFeature: (feature, layer) => {
       layer.bindTooltip(feature.properties.name, { className: 'paygap-tip' });
       if (feature.properties.id !== region.id) {
@@ -159,7 +159,7 @@ function initDetailCharts(region, province, nationalAvgUmk, siblings) {
 
   charts.push(new Chart(document.getElementById('chart-compare'), {
     type: 'bar',
-    data: { labels, datasets: [{ data: values, backgroundColor: ['#111827', '#9ca3af', '#9ca3af', '#9ca3af', '#2563eb'] }] },
+    data: { labels, datasets: [{ data: values, backgroundColor: ['#39ff8f', '#4a6157', '#4a6157', '#4a6157', '#29c8ff'] }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => rupiahShort(v) } } } },
   }));
 
@@ -169,7 +169,7 @@ function initDetailCharts(region, province, nationalAvgUmk, siblings) {
       type: 'line',
       data: {
         labels: sorted.map((h) => h.year),
-        datasets: [{ label: 'UMK', data: sorted.map((h) => h.umk), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,.15)', fill: true, tension: 0.2 }],
+        datasets: [{ label: 'UMK', data: sorted.map((h) => h.umk), borderColor: '#39ff8f', backgroundColor: 'rgba(57,255,143,.15)', fill: true, tension: 0.2 }],
       },
       options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: (v) => rupiahShort(v) } } } },
     }));

@@ -1,7 +1,7 @@
 import { loadData } from './store.js';
 import { rupiah, rupiahShort, pct, el, debounce } from './utils.js';
 
-const COLORS = { notEnough: '#dc2626', tight: '#f59e0b', comfortable: '#16a34a', veryComfortable: '#2563eb', unset: '#cbd5e1' };
+const COLORS = { notEnough: '#ff3b5c', tight: '#ffc233', comfortable: '#2ee673', veryComfortable: '#29c8ff', unset: '#3a4a41' };
 const VERDICT_LABEL = {
   notEnough: "Can't cover KHL",
   tight: 'Tight',
@@ -161,7 +161,7 @@ export async function renderAfford(container) {
         el('td', { class: 'num' }, r.povertyLine !== null ? rupiah(r.povertyLine) : '—'),
         el('td', { class: 'num' }, r.surplus !== null ? (r.surplus >= 0 ? '+' : '') + rupiah(r.surplus) : '—'),
         el('td', { class: 'num' }, r.ratio !== null ? pct(r.ratio) : '—'),
-        el('td', {}, el('span', { class: 'badge outline', style: r.verdict !== 'unset' ? `background:${COLORS[r.verdict]};color:#fff;border:none` : '' }, VERDICT_LABEL[r.verdict])),
+        el('td', {}, el('span', { class: 'badge outline', style: r.verdict !== 'unset' ? `background:${COLORS[r.verdict]};color:#04170b;border:none` : '' }, VERDICT_LABEL[r.verdict])),
         el('td', {}, el('a', { href: '#/?province=' + r.id }, 'View regions →')),
       ]));
     });
@@ -175,7 +175,7 @@ export async function renderAfford(container) {
     geoLayer.eachLayer((layer) => {
       const r = byId.get(layer.feature.properties.id);
       if (!r) return;
-      layer.setStyle({ fillColor: COLORS[r.verdict], weight: 0.6, color: '#fff', fillOpacity: 0.78 });
+      layer.setStyle({ fillColor: COLORS[r.verdict], weight: 0.6, color: '#03110a', fillOpacity: 0.8 });
       const ratioTxt = r.ratio !== null ? pct(r.ratio) : 'n/a';
       layer.setTooltipContent(`
         <div class="tip-title">${r.name}</div>
@@ -189,16 +189,16 @@ export async function renderAfford(container) {
 
 function initMap(data) {
   mapInstance = L.map('afford-map', { scrollWheelZoom: true }).setView([-2.3, 118], 4);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri', maxZoom: 16,
   }).addTo(mapInstance);
 
   geoLayer = L.geoJSON(data.geoProv, {
-    style: () => ({ fillColor: COLORS.unset, weight: 0.6, color: '#fff', fillOpacity: 0.6 }),
+    style: () => ({ fillColor: COLORS.unset, weight: 0.6, color: '#03110a', fillOpacity: 0.6 }),
     onEachFeature: (feature, layer) => {
       layer.bindTooltip(feature.properties.name, { className: 'paygap-tip', sticky: true });
-      layer.on('mouseover', () => layer.setStyle({ weight: 2, color: '#111' }));
-      layer.on('mouseout', () => layer.setStyle({ weight: 0.6, color: '#fff' }));
+      layer.on('mouseover', () => layer.setStyle({ weight: 2, color: '#39ff8f' }));
+      layer.on('mouseout', () => layer.setStyle({ weight: 0.6, color: '#03110a' }));
       layer.on('click', () => { window.location.hash = '#/?province=' + feature.properties.id; });
     },
   }).addTo(mapInstance);

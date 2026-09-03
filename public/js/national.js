@@ -1,7 +1,7 @@
 import { loadData } from './store.js';
 import { rupiah, rupiahShort, pct, CATEGORY_LABEL, CATEGORY_ORDER, debounce, el, slugify } from './utils.js';
 
-const COLORS = { below: '#dc2626', barely: '#f59e0b', moderate: '#16a34a', far: '#2563eb', nodata: '#9ca3af' };
+const COLORS = { below: '#ff3b5c', barely: '#ffc233', moderate: '#2ee673', far: '#29c8ff', nodata: '#4a6157' };
 
 const state = {
   granularity: 'kabupaten',
@@ -166,7 +166,7 @@ function clearHover() {
 function initMap(data) {
   dataRef = data;
   mapInstance = L.map('map', { scrollWheelZoom: true }).setView([-2.3, 118], 5);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri', maxZoom: 16,
   }).addTo(mapInstance);
   // fast pointer movement can skip a layer's own mouseout (leaving the map
@@ -181,8 +181,8 @@ function styleFeature(props) {
   return {
     fillColor: COLORS[props.category] || COLORS.nodata,
     weight: 0.6,
-    color: '#ffffff',
-    fillOpacity: 0.75,
+    color: '#03110a',
+    fillOpacity: 0.8,
   };
 }
 
@@ -207,8 +207,8 @@ function matchesFilters(props, isKab) {
 function computeStyle(props, isKab) {
   const base = styleFeature(props);
   if (!hasActiveFilters()) return base;
-  if (matchesFilters(props, isKab)) return { ...base, weight: 1.2, color: '#374151' };
-  return { ...base, fillOpacity: 0.07, color: '#e5e7eb', weight: 0.3 };
+  if (matchesFilters(props, isKab)) return { ...base, weight: 1.4, color: '#39ff8f' };
+  return { ...base, fillOpacity: 0.07, color: '#0f1f16', weight: 0.3 };
 }
 
 function refreshMapHighlight() {
@@ -259,7 +259,7 @@ function refreshMapLayer() {
       layer.bindTooltip(tip, { className: 'paygap-tip', sticky: true });
       layer.on('mouseover', () => {
         clearHover();
-        layer.setStyle({ weight: 2, color: '#111' });
+        layer.setStyle({ weight: 2, color: '#39ff8f' });
         hoveredLayer = layer;
       });
       layer.on('mouseout', () => {
@@ -378,8 +378,8 @@ function initCharts(merged) {
     data: {
       labels: provWithWage.map((p) => p.name),
       datasets: [
-        { label: 'UMP 2026', data: provWithWage.map((p) => p.ump2026), backgroundColor: '#9ca3af' },
-        { label: 'Avg. wage', data: provWithWage.map((p) => p.avgWage), backgroundColor: '#2563eb' },
+        { label: 'UMP 2026', data: provWithWage.map((p) => p.ump2026), backgroundColor: '#4a6157' },
+        { label: 'Avg. wage', data: provWithWage.map((p) => p.avgWage), backgroundColor: '#39ff8f' },
       ],
     },
     options: { indexAxis: 'y', scales: { x: { ticks: { callback: (v) => rupiahShort(v) } } }, plugins: { legend: { position: 'bottom' } } },

@@ -6,6 +6,13 @@ import { debounce } from './utils.js';
 
 const app = document.getElementById('app');
 
+if (window.Chart) {
+  Chart.defaults.color = '#9fc7ad';
+  Chart.defaults.borderColor = 'rgba(57, 255, 143, 0.12)';
+  Chart.defaults.font.family = "'Rajdhani', sans-serif";
+  Chart.defaults.font.size = 12;
+}
+
 const SPINNER_HTML = `
   <div class="spinner-wrap">
     <div class="spinner"></div>
