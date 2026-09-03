@@ -107,7 +107,7 @@ export async function renderDetail(container, regionId) {
         numbeoEntry.asOf ? `(${numbeoEntry.asOf}) ` : '',
         numbeoEntry.confidence || '',
       ]),
-      buildNumbeoTable(numbeoEntry),
+      buildNumbeoBars(numbeoEntry),
     ]) : null,
     el('div', { class: 'panel' }, [
       el('h2', {}, 'UMK history'),
@@ -230,27 +230,44 @@ function buildGapSpectrumSvg(region, province) {
   `;
 }
 
-function buildNumbeoTable(entry) {
-  const table = el('table', { class: 'data-table' });
-  const rows = [
+function buildNumbeoBars(entry) {
+  // avg. net salary is income, not a cost - keep it out of the cost-item scale
+  // (mixing it in would dwarf every other bar and make them all unreadable).
+  const costRows = [
     ['Rent, 1BR city center', entry.rentCityCenter],
     ['Rent, 1BR outside center', entry.rentOutsideCenter],
-    ['Inexpensive meal out', entry.inexpensiveMeal],
     ['Mid-range meal for 2', entry.midRangeMealFor2],
-    ['Public transport pass / month', entry.transportMonthly],
+    ['Preschool / month', entry.preschoolMonthly],
+    ['Gym membership / month', entry.gymMonthly],
     ['Basic utilities / month', entry.utilitiesMonthly],
     ['Internet / month', entry.internetMonthly],
+    ['Public transport pass / month', entry.transportMonthly],
+    ['Inexpensive meal out', entry.inexpensiveMeal],
     ['Mobile data plan (10GB) / month', entry.mobileDataMonthly],
-    ['Gym membership / month', entry.gymMonthly],
-    ['Preschool / month', entry.preschoolMonthly],
-    ['Numbeo avg. net salary (reference)', entry.avgNetSalary],
   ].filter(([, v]) => v !== null && v !== undefined);
-  const tbody = el('tbody');
-  rows.forEach(([label, value]) => {
-    tbody.appendChild(el('tr', { style: 'cursor:default' }, [el('td', {}, label), el('td', { class: 'num' }, rupiah(value))]));
-  });
-  table.appendChild(tbody);
-  return table;
+
+  if (!costRows.length) return el('p', { style: 'font-size:12.5px;color:var(--text-dim)' }, 'No detailed price data available for this city.');
+
+  const maxVal = Math.max(...costRows.map(([, v]) => v));
+  const wrap = el('div', { class: 'numbeo-bars' });
+  costRows
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([label, value]) => {
+      const widthPct = Math.max((value / maxVal) * 100, 6);
+      wrap.appendChild(el('div', { class: 'numbeo-row' }, [
+        el('div', { class: 'numbeo-label' }, label),
+        el('div', { class: 'numbeo-track' }, [
+          el('div', { class: 'numbeo-fill', style: `width:${widthPct}%` }),
+          el('span', { class: 'numbeo-value' }, rupiah(value)),
+        ]),
+      ]));
+    });
+
+  if (entry.avgNetSalary !== null && entry.avgNetSalary !== undefined) {
+    wrap.appendChild(el('p', { style: 'font-size:11.5px;color:var(--text-dim);margin:10px 0 0' },
+      `Numbeo avg. net salary (reference, not part of the bars above): ${rupiah(entry.avgNetSalary)}`));
+  }
+  return wrap;
 }
 
 function initDetailMap(data, region) {
