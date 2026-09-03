@@ -120,7 +120,7 @@ export async function renderDetail(container, regionId) {
 
   container.appendChild(mapPanel);
 
-  const chartsGrid = el('div', { class: 'chart-grid' }, [
+  const chartPanels = [
     el('div', { class: 'panel' }, [
       el('h2', {}, 'Wage comparison'),
       el('div', { class: 'chart-box' }, el('canvas', { id: 'chart-compare' })),
@@ -150,9 +150,9 @@ export async function renderDetail(container, regionId) {
         ? el('div', { class: 'chart-box' }, el('canvas', { id: 'chart-history' }))
         : el('p', { style: 'font-size:12.5px;color:var(--text-dim)' }, 'No historical UMK series available for this region in the source data.'),
     ]),
-  ]);
+  ];
 
-  container.appendChild(chartsGrid);
+  chartPanels.filter(Boolean).forEach((p) => container.appendChild(p));
 
   // sibling table
   const tablePanel = el('div', { class: 'panel' }, [
