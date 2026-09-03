@@ -3,16 +3,6 @@ import { rupiah, rupiahShort, pct, CATEGORY_LABEL, el } from './utils.js';
 
 const COLORS = { below: '#ff3b5c', barely: '#ffc233', moderate: '#2ee673', far: '#29c8ff', nodata: '#4a6157' };
 
-// Numbeo living-cost data only covers 5 cities; map each to the province whose
-// capital it is, so a region's detail page can show the closest available sample.
-const PROVINCE_TO_NUMBEO_CITY = {
-  'dki-jakarta': 'Jakarta',
-  'jawa-timur': 'Surabaya',
-  'jawa-barat': 'Bandung',
-  'di-yogyakarta': 'Yogyakarta',
-  'jawa-tengah': 'Semarang',
-};
-
 function khlVerdict(ratio) {
   if (ratio === null) return { label: 'No KHL data', color: COLORS.nodata };
   if (ratio < 1.0) return { label: 'Below decent-living needs', color: COLORS.below };
@@ -92,8 +82,10 @@ export async function renderDetail(container, regionId) {
     el('div', { id: 'detail-map' }),
   ]);
 
-  const numbeoCity = PROVINCE_TO_NUMBEO_CITY[region.provinceId];
-  const numbeoEntry = numbeoCity ? data.merged.numbeoCities.find((c) => c.city === numbeoCity) : null;
+  // itemized_cost_of_living_by_city covers 14/38 provinces; some (Jawa Timur,
+  // Jawa Barat) have 2 cities - the source lists the provincial capital first,
+  // so find() naturally picks the more representative one.
+  const numbeoEntry = data.merged.numbeoCities.find((c) => c.provinceId === region.provinceId) || null;
 
   const chartsCol = el('div', {}, [
     el('div', { class: 'panel' }, [
@@ -110,8 +102,11 @@ export async function renderDetail(container, regionId) {
     ]),
     numbeoEntry ? el('div', { class: 'panel' }, [
       el('h2', {}, `Sample local prices — ${numbeoEntry.city} (Numbeo)`),
-      el('p', { style: 'font-size:11px;color:var(--text-dim);margin:0 0 10px' },
-        `Crowdsourced, not specific to ${region.name} — shown as the closest available city sample for ${region.provinceName}.`),
+      el('p', { style: 'font-size:11px;color:var(--text-dim);margin:0 0 10px' }, [
+        `Crowdsourced, not specific to ${region.name} — shown as the closest available city sample for ${region.provinceName}. `,
+        numbeoEntry.asOf ? `(${numbeoEntry.asOf}) ` : '',
+        numbeoEntry.confidence || '',
+      ]),
       buildNumbeoTable(numbeoEntry),
     ]) : null,
     el('div', { class: 'panel' }, [
@@ -241,9 +236,14 @@ function buildNumbeoTable(entry) {
     ['Rent, 1BR city center', entry.rentCityCenter],
     ['Rent, 1BR outside center', entry.rentOutsideCenter],
     ['Inexpensive meal out', entry.inexpensiveMeal],
+    ['Mid-range meal for 2', entry.midRangeMealFor2],
+    ['Public transport pass / month', entry.transportMonthly],
     ['Basic utilities / month', entry.utilitiesMonthly],
     ['Internet / month', entry.internetMonthly],
-    ['Public transport pass / month', entry.publicTransportMonthly],
+    ['Mobile data plan (10GB) / month', entry.mobileDataMonthly],
+    ['Gym membership / month', entry.gymMonthly],
+    ['Preschool / month', entry.preschoolMonthly],
+    ['Numbeo avg. net salary (reference)', entry.avgNetSalary],
   ].filter(([, v]) => v !== null && v !== undefined);
   const tbody = el('tbody');
   rows.forEach(([label, value]) => {

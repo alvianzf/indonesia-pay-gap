@@ -98,18 +98,28 @@ livingCosts.poverty_line_by_province.forEach((r) => {
   povertyByProvince.set(r.province, { total: r.total_poverty_line, source: r.source });
 });
 
-const numbeoCities = livingCosts.numbeo_cost_breakdown_by_city
-  .filter((c) => c.rent_1br_city_center_idr !== null)
-  .map((c) => ({
-    city: c.city,
-    rentCityCenter: c.rent_1br_city_center_idr,
-    rentOutsideCenter: c.rent_1br_outside_center_idr,
-    inexpensiveMeal: c.meal_inexpensive_restaurant_idr,
-    utilitiesMonthly: c.utilities_basic_monthly_idr,
-    internetMonthly: c.internet_monthly_idr,
-    publicTransportMonthly: c.public_transport_monthly_pass_idr,
-    source: c.source,
-  }));
+// itemized_cost_of_living_by_city (16 cities) supersedes the older, sparser
+// numbeo_cost_breakdown_by_city (5 cities, kept in the source file only for
+// history/backward-compat per its own notes) - flatten the fields we use.
+const numbeoCities = (livingCosts.itemized_cost_of_living_by_city || []).map((c) => ({
+  city: c.city,
+  provinceId: slug(c.province),
+  provinceName: c.province,
+  asOf: c.as_of || null,
+  rentCityCenter: c.housing?.rent_1br_city_center ?? null,
+  rentOutsideCenter: c.housing?.rent_1br_outside_center ?? null,
+  inexpensiveMeal: c.food?.inexpensive_restaurant_meal ?? null,
+  midRangeMealFor2: c.food?.mid_range_3course_meal_for_2 ?? null,
+  transportMonthly: c.transportation?.monthly_pass ?? null,
+  utilitiesMonthly: c.utilities?.basic_915sqft_apartment_monthly ?? null,
+  internetMonthly: c.utilities?.internet_60mbps_monthly ?? null,
+  mobileDataMonthly: c.utilities?.mobile_plan_10gb_monthly ?? null,
+  gymMonthly: c.entertainment_leisure?.gym_membership_monthly ?? null,
+  preschoolMonthly: c.childcare_education?.preschool_monthly ?? null,
+  avgNetSalary: c.salary_reference?.average_monthly_net_salary ?? null,
+  confidence: c.confidence || null,
+  source: c.source,
+}));
 
 // ---------- build merged dataset ----------
 const outProvinces = [];
