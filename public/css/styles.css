@@ -218,3 +218,27 @@ table.data-table td.num { text-align: right; font-variant-numeric: tabular-nums;
 .source-list li { margin-bottom: 4px; overflow-wrap: anywhere; }
 
 .rank-pill { font-size: 11.5px; color: var(--text-dim); }
+
+/* ---- compare page ---- */
+.compare-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.compare-slot {
+  position: relative; min-width: 0; background: rgba(6,16,10,.6); border: 1px dashed var(--border);
+  border-radius: var(--radius); padding: 10px 12px; min-height: 46px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.compare-slot.filled { border-style: solid; background: var(--panel-raised); }
+.compare-slot input { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 4px 2px; }
+.compare-slot input::placeholder { color: var(--text-dim); }
+.compare-slot input:focus { outline: none; }
+.compare-slot > div { overflow-wrap: anywhere; }
+.compare-remove { background: none; border: 1px solid var(--border); color: var(--text-dim); border-radius: 999px; width: 22px; height: 22px; flex: none; cursor: pointer; font-size: 11px; line-height: 1; }
+.compare-remove:hover { color: var(--below); border-color: var(--below); }
+.compare-slot-results {
+  position: absolute; left: 0; top: 100%; margin-top: 4px; width: 100%; max-height: 260px; overflow-y: auto;
+  background: var(--panel-raised); border: 1px solid var(--border-strong); border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 0 24px rgba(57,255,143,.1); z-index: 50;
+}
+.compare-slot-results a { display: block; padding: 8px 12px; color: var(--text); font-size: 12.5px; border-bottom: 1px solid var(--border); text-shadow: none; }
+.compare-slot-results a:hover { background: rgba(57,255,143,.08); text-decoration: none; }
+.compare-slot-results .muted { padding: 8px 12px; color: var(--text-dim); font-size: 12px; }
+table.compare-table td.row-label, table.compare-table th:first-child { color: var(--text-dim); font-weight: 600; white-space: nowrap; }

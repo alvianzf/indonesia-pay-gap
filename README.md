@@ -23,6 +23,7 @@ That fragmentation hides a more useful question: is the legal minimum actually c
 - Sortable, searchable, paginated datatable with province/category filters that also drive the map (dims non-matches, recenters to the filtered set)
 - National analytics: category distribution, province UMP-vs-avg-wage comparison, top/bottom 10 UMK rankings
 - **Salary Affordability tool** (`#/afford`): enter a monthly salary and see which of the 38 provinces you could live comfortably in, ranked against Kemnaker's official KHL (decent-living-needs) figure, with a colored province map, verdict badges, and a link from each row into that province's regions on the main map
+- **Compare Regions** (`#/compare`, or `#/compare?r=id1,id2,...` to share a comparison directly): pick up to 4 kabupaten/kota and see them side by side in a table (UMK, province benchmarks, pay-gap category, KHL ratio, poverty line, national rank) plus a grouped bar chart
 - Quick-search jump box, full SEO metadata (OG/Twitter cards, JSON-LD, sitemap)
 
 ## Run it
@@ -63,6 +64,7 @@ public/                static frontend (vanilla JS, ES modules, Leaflet + Chart.
   js/national.js        home view: map, filters, datatable, charts
   js/detail.js           per-region page: mini map, KPIs, comparisons, sibling table
   js/afford.js           salary affordability tool: province map + ranked table by KHL ratio
+  js/compare.js           compare up to 4 regions: table + grouped bar chart, shareable via ?r=
   js/main.js             hash router + quick search
 server.js               zero-dependency static file server
 ```

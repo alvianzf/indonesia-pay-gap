@@ -2,6 +2,7 @@ import { loadData } from './store.js';
 import { renderNational } from './national.js';
 import { renderDetail } from './detail.js';
 import { renderAfford } from './afford.js';
+import { renderCompare } from './compare.js';
 import { debounce } from './utils.js';
 
 const app = document.getElementById('app');
@@ -35,6 +36,8 @@ async function route() {
     await renderDetail(app, id);
   } else if (path === 'afford') {
     await renderAfford(app);
+  } else if (path === 'compare') {
+    await renderCompare(app);
   } else {
     await renderNational(app);
     if (queryStr) {
