@@ -27,6 +27,13 @@ export async function renderNational(container) {
   destroyCharts();
   if (mapInstance) { mapInstance.remove(); mapInstance = null; }
   hoveredLayer = null;
+  // filters are transient per-visit state, not a persisted preference - reset them
+  // on every fresh render so a leftover filter from a previous visit can't leave
+  // the map silently dimmed/recentered to a region the visible controls no longer show
+  state.search = '';
+  state.provinceFilter = '';
+  state.categoryFilter = '';
+  state.page = 1;
 
   const data = await loadData();
   const { merged } = data;
