@@ -27,6 +27,9 @@ a:hover { text-decoration: underline; }
 }
 .brand { font-weight: 700; font-size: 16px; color: var(--text); }
 .brand:hover { text-decoration: none; }
+.topnav { display: flex; gap: 18px; margin-left: 24px; margin-right: auto; }
+.topnav a { color: var(--text-dim); font-size: 13px; font-weight: 600; }
+.topnav a:hover { color: var(--text); text-decoration: none; }
 .topbar-right { position: relative; }
 .quick-search {
   width: 260px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;

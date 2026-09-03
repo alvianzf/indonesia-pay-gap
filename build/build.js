@@ -8,6 +8,7 @@ const OUT_DIR = path.join(__dirname, '..', 'public', 'data');
 
 const umk = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'umk_source.json'), 'utf-8'));
 const wages = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'wages_source.json'), 'utf-8'));
+const livingCosts = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'living_costs_source.json'), 'utf-8'));
 const kabGeo = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'kab_raw.json'), 'utf-8'));
 const provGeo = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'prov_raw.json'), 'utf-8'));
 
@@ -85,6 +86,31 @@ wages.provinces.forEach((p) => {
   wageByProvince.set(p.province, latestWage(p.data));
 });
 
+// ---------- living cost lookups (KHL = Kemnaker's official "decent living needs" figure) ----------
+const khlByProvince = new Map();
+livingCosts.khl_breakdown_by_region.forEach((r) => {
+  khlByProvince.set(r.region, { total: r.total_khl, source: r.source });
+});
+
+const povertyByProvince = new Map();
+livingCosts.poverty_line_by_province.forEach((r) => {
+  if (r.province === 'Indonesia (national)') return;
+  povertyByProvince.set(r.province, { total: r.total_poverty_line, source: r.source });
+});
+
+const numbeoCities = livingCosts.numbeo_cost_breakdown_by_city
+  .filter((c) => c.rent_1br_city_center_idr !== null)
+  .map((c) => ({
+    city: c.city,
+    rentCityCenter: c.rent_1br_city_center_idr,
+    rentOutsideCenter: c.rent_1br_outside_center_idr,
+    inexpensiveMeal: c.meal_inexpensive_restaurant_idr,
+    utilitiesMonthly: c.utilities_basic_monthly_idr,
+    internetMonthly: c.internet_monthly_idr,
+    publicTransportMonthly: c.public_transport_monthly_pass_idr,
+    source: c.source,
+  }));
+
 // ---------- build merged dataset ----------
 const outProvinces = [];
 const outRegions = [];
@@ -103,6 +129,8 @@ umk.provinces.forEach((p) => {
   const wageSource = wageEntry ? wageEntry.source : null;
   const ratio = avgWage ? avgWage / p.ump_2026 : null;
   const category = categorize(ratio);
+  const khlEntry = khlByProvince.get(p.province) || null;
+  const povertyEntry = povertyByProvince.get(p.province) || null;
 
   outProvinces.push({
     id: provId,
@@ -119,6 +147,10 @@ umk.provinces.forEach((p) => {
     category,
     umpHistory: (p.ump_history || []).map((h) => ({ year: h.year, ump: h.ump })),
     regionCount: 0, // filled below
+    khlTotal: khlEntry ? khlEntry.total : null,
+    khlSource: khlEntry ? khlEntry.source : null,
+    povertyLine: povertyEntry && povertyEntry.total !== null ? povertyEntry.total : null,
+    povertyLineSource: povertyEntry ? povertyEntry.source : null,
   });
 
   if (provFeature) {
@@ -245,6 +277,8 @@ const summary = {
     .map((r) => ({ id: r.id, name: r.name, province: r.provinceName, umk2026: r.umk2026 })),
   lowestUmk: [...outRegions].sort((a, b) => a.umk2026 - b.umk2026).slice(0, 15)
     .map((r) => ({ id: r.id, name: r.name, province: r.provinceName, umk2026: r.umk2026 })),
+  provincesWithKhl: outProvinces.filter((p) => p.khlTotal !== null).length,
+  provincesWithPovertyLine: outProvinces.filter((p) => p.povertyLine !== null).length,
 };
 
 const merged = {
@@ -256,10 +290,12 @@ const merged = {
     thresholds: THRESHOLDS,
     colors: COLORS,
     methodology: `Pay-gap ratio = latest available province-level average net wage (BPS Sakernas, employees only) divided by the region UMK (or provincial UMP where no separate UMK exists). Average wage data exists for ${summary.provincesWithWageData} of ${outProvinces.length} provinces and is NOT available at kabupaten/kota level, so all kabupaten/kota within a province share the same income reference figure. No median wage figures exist in the source data at any level.`,
+    affordabilityMethodology: `Salary affordability compares your monthly salary against each province's official KHL (Kebutuhan Hidup Layak / "decent living needs") figure from Kemnaker - the same benchmark wage councils use as an input to minimum-wage decisions. KHL is available for all ${summary.provincesWithKhl} of ${outProvinces.length} provinces, but only at province level (not kabupaten/kota), is a province-wide average (not adjusted for city vs. rural cost differences within it), and is a single-person "decent" budget, not a household one. BPS's Garis Kemiskinan (poverty line, a bare per-capita subsistence threshold - much lower than KHL) is shown alongside where available (${summary.provincesWithPovertyLine}/${outProvinces.length} provinces) as a second, stricter reference point.`,
   },
   summary,
   provinces: outProvinces,
   regions: outRegions,
+  numbeoCities,
 };
 
 fs.mkdirSync(OUT_DIR, { recursive: true });

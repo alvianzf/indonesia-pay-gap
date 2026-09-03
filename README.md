@@ -22,6 +22,7 @@ That fragmentation hides a more useful question: is the legal minimum actually c
 - Click any region to open its own detail page: mini map, KPIs, wage comparison chart, UMK history trend, sibling-region table
 - Sortable, searchable, paginated datatable with province/category filters that also drive the map (dims non-matches, recenters to the filtered set)
 - National analytics: category distribution, province UMP-vs-avg-wage comparison, top/bottom 10 UMK rankings
+- **Salary Affordability tool** (`#/afford`): enter a monthly salary and see which of the 38 provinces you could live comfortably in, ranked against Kemnaker's official KHL (decent-living-needs) figure, with a colored province map, verdict badges, and a link from each row into that province's regions on the main map
 - Quick-search jump box, full SEO metadata (OG/Twitter cards, JSON-LD, sitemap)
 
 ## Run it
@@ -34,7 +35,7 @@ Then open http://localhost:8787 (needs internet access for the basemap tiles and
 
 ## Regenerate the data
 
-Source files live in `data/` (`umk_source.json`, `wages_source.json` — copies of the two files you supplied — plus `kab_raw.json`/`prov_raw.json`, Indonesia administrative boundaries from [ardian28/GeoJson-Indonesia-38-Provinsi](https://github.com/ardian28/GeoJson-Indonesia-38-Provinsi), BIG geoservice source, MIT licensed).
+Source files live in `data/` (`umk_source.json`, `wages_source.json`, `living_costs_source.json` — copies of the files you supplied — plus `kab_raw.json`/`prov_raw.json`, Indonesia administrative boundaries from [ardian28/GeoJson-Indonesia-38-Provinsi](https://github.com/ardian28/GeoJson-Indonesia-38-Provinsi), BIG geoservice source, MIT licensed).
 
 ```
 node build/build.js
@@ -48,6 +49,7 @@ This merges everything and writes `public/data/merged.json`, `geo_provinces.json
 - **Average wage is only available at the province level**, not below it — there is no kabupaten/kota-level income data at all. (Coverage across provinces varies by data vintage; the UI banner always shows the current count.)
 - Consequently, the "pay-gap" color/ratio compares a **region's UMK against its province's average wage** — every kabupaten/kota in a province shares the same income reference. This is a real proxy limitation, not a bug: it still surfaces genuine signal (high-UMK areas like Bekasi/Karawang show as tight/red because the province-wide wage average can't keep pace), but it does not capture true intra-province cost-of-living or income variation.
 - DKI Jakarta and Sumatera Barat have no separate UMK — all their kabupaten/kota use the provincial UMP directly (flagged in the UI as "uses provincial UMP").
+- **Living-cost data (`living_costs_source.json`) is also province-level only.** KHL (Kemnaker's decent-living-needs figure, used by the Salary Affordability tool) covers all 38 provinces; BPS's poverty line covers 34/38. Numbeo's crowdsourced rent/grocery breakdown only has usable data for 5 cities (Jakarta, Surabaya, Bandung, Yogyakarta, Semarang) and is not used in any calculation — it's raw, unreconciled, self-selected sample data, kept in `merged.json.numbeoCities` for reference only. The file's `cpi_by_city` section is too sparse/inconsistent to use at all and is intentionally not merged in.
 
 ## Project structure
 
@@ -60,6 +62,7 @@ public/                static frontend (vanilla JS, ES modules, Leaflet + Chart.
   js/store.js           fetches & indexes the built data
   js/national.js        home view: map, filters, datatable, charts
   js/detail.js           per-region page: mini map, KPIs, comparisons, sibling table
+  js/afford.js           salary affordability tool: province map + ranked table by KHL ratio
   js/main.js             hash router + quick search
 server.js               zero-dependency static file server
 ```

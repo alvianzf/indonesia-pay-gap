@@ -1,6 +1,7 @@
 import { loadData } from './store.js';
 import { renderNational } from './national.js';
 import { renderDetail } from './detail.js';
+import { renderAfford } from './afford.js';
 import { debounce } from './utils.js';
 
 const app = document.getElementById('app');
@@ -25,6 +26,8 @@ async function route() {
   if (path.startsWith('region/')) {
     const id = decodeURIComponent(path.slice('region/'.length));
     await renderDetail(app, id);
+  } else if (path === 'afford') {
+    await renderAfford(app);
   } else {
     await renderNational(app);
     if (queryStr) {
