@@ -3,12 +3,18 @@ import { rupiah, rupiahShort, pct, CATEGORY_LABEL, el } from './utils.js';
 
 const COLORS = { below: '#ff3b5c', barely: '#ffc233', moderate: '#2ee673', far: '#29c8ff', nodata: '#4a6157' };
 
-function khlVerdict(ratio) {
-  if (ratio === null) return { label: 'No KHL data', color: COLORS.nodata };
-  if (ratio < 1.0) return { label: 'Below decent-living needs', color: COLORS.below };
-  if (ratio < 1.15) return { label: 'Just meets it', color: COLORS.barely };
-  if (ratio < 1.5) return { label: 'Comfortably covers it', color: COLORS.moderate };
-  return { label: 'Well above it', color: COLORS.far };
+const VERDICT_LABELS = {
+  khl: { below: 'Below decent-living needs', barely: 'Just meets it', moderate: 'Comfortably covers it', far: 'Well above it', nodata: 'No KHL data' },
+  poverty: { below: 'Below the poverty line', barely: 'Just above the poverty line', moderate: 'Comfortably above it', far: 'Well above it', nodata: 'No poverty-line data' },
+};
+
+function livingCostVerdict(ratio, kind) {
+  const labels = VERDICT_LABELS[kind];
+  if (ratio === null) return { label: labels.nodata, color: COLORS.nodata };
+  if (ratio < 1.0) return { label: labels.below, color: COLORS.below };
+  if (ratio < 1.15) return { label: labels.barely, color: COLORS.barely };
+  if (ratio < 1.5) return { label: labels.moderate, color: COLORS.moderate };
+  return { label: labels.far, color: COLORS.far };
 }
 
 let mapInstance = null;
@@ -61,8 +67,20 @@ export async function renderDetail(container, regionId) {
     el('span', { class: 'badge ' + region.category }, CATEGORY_LABEL[region.category]),
   ]));
 
-  const umkToKhl = province.khlTotal ? region.umk2026 / province.khlTotal : null;
-  const khlVerdictInfo = khlVerdict(umkToKhl);
+  // KHL is almost always province-only (1 region nationwide has its own);
+  // the poverty line is now genuinely region-level for 514/517 regions - both
+  // fall back to the province figure where no region-specific one exists.
+  const khlIsRegionLevel = region.khlTotal !== null;
+  const effectiveKhl = region.khlTotal ?? province.khlTotal;
+  const khlSourceUrl = region.khlTotal !== null ? region.khlSource : province.khlSource;
+  const povertyIsRegionLevel = region.povertyLine !== null;
+  const effectivePoverty = region.povertyLine ?? province.povertyLine;
+  const povertySourceUrl = region.povertyLine !== null ? region.povertyLineSource : province.povertyLineSource;
+
+  const umkToKhl = effectiveKhl ? region.umk2026 / effectiveKhl : null;
+  const khlVerdictInfo = livingCostVerdict(umkToKhl, 'khl');
+  const umkToPoverty = effectivePoverty ? region.umk2026 / effectivePoverty : null;
+  const povertyVerdictInfo = livingCostVerdict(umkToPoverty, 'poverty');
 
   const kpiGrid = el('div', { class: 'kpi-grid' }, [
     kpi(rupiah(region.umk2026), region.usesUmpFallback ? 'UMP 2026 (applies here)' : 'UMK 2026'),
@@ -71,9 +89,10 @@ export async function renderDetail(container, regionId) {
     kpi(region.ratio !== null ? pct(region.ratio) : '—', 'Avg wage ÷ UMK'),
     kpi('#' + rankInProvince + ' / ' + siblings.length, 'Rank in province (by UMK)'),
     kpi('#' + nationalRank + ' / ' + allSorted.length, 'National rank (by UMK)'),
-    kpi(province.khlTotal !== null ? rupiah(province.khlTotal) : 'No data', 'Province KHL (decent living needs)'),
+    kpi(effectiveKhl !== null ? rupiah(effectiveKhl) : 'No data', khlIsRegionLevel ? "This region's KHL (decent living)" : 'Province KHL (decent living)'),
     kpi(umkToKhl !== null ? pct(umkToKhl) : '—', 'UMK ÷ KHL', khlVerdictInfo.color, khlVerdictInfo.label),
-    kpi(province.povertyLine !== null ? rupiah(province.povertyLine) : 'No data', 'Province poverty line (BPS)'),
+    kpi(effectivePoverty !== null ? rupiah(effectivePoverty) : 'No data', povertyIsRegionLevel ? "This region's poverty line (BPS)" : 'Province poverty line (BPS)'),
+    kpi(umkToPoverty !== null ? pct(umkToPoverty) : '—', 'UMK ÷ poverty line', povertyVerdictInfo.color, povertyVerdictInfo.label),
   ]);
   container.appendChild(kpiGrid);
 
@@ -93,8 +112,8 @@ export async function renderDetail(container, regionId) {
       el('div', { class: 'chart-box' }, el('canvas', { id: 'chart-compare' })),
     ]),
     el('div', { class: 'panel' }, [
-      el('h2', {}, 'Cost of living vs. pay (province level)'),
-      el('div', { class: 'gap-spectrum', html: buildGapSpectrumSvg(region, province) }),
+      el('h2', {}, `Cost of living vs. pay (${khlIsRegionLevel ? 'this region' : 'province level'})`),
+      el('div', { class: 'gap-spectrum', html: buildGapSpectrumSvg(region, effectiveKhl) }),
       el('p', { style: 'font-size:11.5px;color:var(--text-dim);margin:10px 0 0' }, [
         'KHL is Kemnaker\'s official "decent living needs" figure — the same benchmark wage councils use to set minimum wages. Dot color = above (green) or below (red) that line. ',
         el('a', { href: '#/afford' }, 'Try the Salary Affordability tool →'),
@@ -130,8 +149,8 @@ export async function renderDetail(container, regionId) {
   const sources = el('ul', { class: 'source-list' }, [
     el('li', {}, ['UMK/UMP source: ', el('a', { href: region.umkSource, target: '_blank', rel: 'noopener' }, region.umkSource), ` (confidence: ${region.umkConfidence || 'n/a'})`]),
     region.wagePeriod ? el('li', {}, ['Province avg. wage source: ', el('a', { href: province.wageSource, target: '_blank', rel: 'noopener' }, province.wageSource)]) : null,
-    province.khlTotal !== null ? el('li', {}, ['Province KHL source: ', el('a', { href: province.khlSource, target: '_blank', rel: 'noopener' }, province.khlSource)]) : null,
-    province.povertyLine !== null ? el('li', {}, ['Province poverty line source: ', el('a', { href: province.povertyLineSource, target: '_blank', rel: 'noopener' }, province.povertyLineSource)]) : null,
+    khlSourceUrl ? el('li', {}, [(khlIsRegionLevel ? "This region's" : "Province") + ' KHL source: ', el('a', { href: khlSourceUrl, target: '_blank', rel: 'noopener' }, khlSourceUrl)]) : null,
+    povertySourceUrl ? el('li', {}, [(povertyIsRegionLevel ? "This region's" : "Province") + ' poverty line source: ', el('a', { href: povertySourceUrl, target: '_blank', rel: 'noopener' }, povertySourceUrl)]) : null,
     numbeoEntry ? el('li', {}, ['Local price sample source: ', el('a', { href: numbeoEntry.source, target: '_blank', rel: 'noopener' }, numbeoEntry.source)]) : null,
   ]);
   container.appendChild(el('div', { class: 'panel' }, [el('h2', {}, 'Sources'), sources]));
@@ -176,8 +195,7 @@ function buildSiblingTable(siblings, currentId) {
 // GAP between them reads as a distance/color on a shared axis instead of requiring
 // the viewer to mentally subtract bar heights. All text is clamped inside the
 // viewBox (clampX) so long Rupiah labels can never render outside the box.
-function buildGapSpectrumSvg(region, province) {
-  const khl = province.khlTotal;
+function buildGapSpectrumSvg(region, khl) {
   const umk = region.umk2026;
   const avgWage = region.avgWageRef;
   const hasAvg = avgWage !== null;

@@ -170,9 +170,22 @@ function buildComparisonTable(regions, provinces, data) {
     el('td', { class: 'row-label' }, 'Pay-gap category'),
     ...regions.map((r) => el('td', {}, el('span', { class: 'badge ' + r.category }, CATEGORY_LABEL[r.category]))),
   ]));
-  tbody.appendChild(metricRow('Province KHL (decent living)', regions, provinces, (r, p) => (p.khlTotal !== null ? rupiah(p.khlTotal) : '—')));
-  tbody.appendChild(metricRow('UMK ÷ KHL', regions, provinces, (r, p) => (p.khlTotal ? pct(r.umk2026 / p.khlTotal) : '—')));
-  tbody.appendChild(metricRow('Province poverty line', regions, provinces, (r, p) => (p.povertyLine !== null ? rupiah(p.povertyLine) : '—')));
+  tbody.appendChild(metricRow('KHL (decent living)', regions, provinces, (r, p) => {
+    const khl = r.khlTotal ?? p.khlTotal;
+    return khl !== null ? rupiah(khl) + (r.khlTotal !== null ? ' (region)' : '') : '—';
+  }));
+  tbody.appendChild(metricRow('UMK ÷ KHL', regions, provinces, (r, p) => {
+    const khl = r.khlTotal ?? p.khlTotal;
+    return khl ? pct(r.umk2026 / khl) : '—';
+  }));
+  tbody.appendChild(metricRow('Poverty line (BPS)', regions, provinces, (r, p) => {
+    const poverty = r.povertyLine ?? p.povertyLine;
+    return poverty !== null ? rupiah(poverty) + (r.povertyLine !== null ? ' (region)' : ' (province)') : '—';
+  }));
+  tbody.appendChild(metricRow('UMK ÷ poverty line', regions, provinces, (r, p) => {
+    const poverty = r.povertyLine ?? p.povertyLine;
+    return poverty ? pct(r.umk2026 / poverty) : '—';
+  }));
   tbody.appendChild(metricRow('National rank (by UMK)', regions, provinces, (r) => '#' + (allSorted.findIndex((x) => x.id === r.id) + 1) + ' / ' + allSorted.length));
   table.appendChild(tbody);
   return table;

@@ -30,6 +30,20 @@ const REGION_ALIAS = {
   'Papua Barat|Kota Manokwari': 'Manokwari',
 };
 
+// same idea, for matching poverty_line_by_region's kabupaten/kota rows (BPS's
+// own naming for these doesn't always match either the UMK source or geo names)
+const LIVING_COST_REGION_ALIAS = {
+  'Sumatera Utara|Kota Padangsidimpuan': 'Kota Padang Sidempuan',
+  'DKI Jakarta|Kepulauan Seribu': 'Administrasi Kepulauan Seribu',
+  'DKI Jakarta|Kota Jakarta Selatan': 'Kota Administrasi Jakarta Selatan',
+  'DKI Jakarta|Kota Jakarta Timur': 'Kota Administrasi Jakarta Timur',
+  'DKI Jakarta|Kota Jakarta Pusat': 'Kota Administrasi Jakarta Pusat',
+  'DKI Jakarta|Kota Jakarta Barat': 'Kota Administrasi Jakarta Barat',
+  'DKI Jakarta|Kota Jakarta Utara': 'Kota Administrasi Jakarta Utara',
+  'Sulawesi Utara|Kepulauan Sitaro': 'Kepulauan Siau Tagulandang Biaro',
+  'Sulawesi Selatan|Pangkajene Dan Kepulauan': 'Pangkajene Kepulauan',
+};
+
 function slug(s) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
@@ -87,16 +101,20 @@ wages.provinces.forEach((p) => {
 });
 
 // ---------- living cost lookups (KHL = Kemnaker's official "decent living needs" figure) ----------
+// Both khl_breakdown_by_region and poverty_line_by_region now carry a 'level'
+// field: mostly province-level, plus a handful of real kabupaten/kota rows
+// (514 for poverty line, 1 for KHL) - province-level feeds province.khlTotal /
+// province.povertyLine as before; the kab-level rows are matched onto
+// individual regions in a separate pass below (attachRegionLevelOverrides).
 const khlByProvince = new Map();
-livingCosts.khl_breakdown_by_region.forEach((r) => {
-  khlByProvince.set(r.region, { total: r.total_khl, source: r.source });
-});
+livingCosts.khl_breakdown_by_region
+  .filter((r) => r.level === 'province')
+  .forEach((r) => khlByProvince.set(r.region, { total: r.total_khl, source: r.source }));
 
 const povertyByProvince = new Map();
-livingCosts.poverty_line_by_province.forEach((r) => {
-  if (r.province === 'Indonesia (national)') return;
-  povertyByProvince.set(r.province, { total: r.total_poverty_line, source: r.source });
-});
+livingCosts.poverty_line_by_region
+  .filter((r) => r.level === 'province' && r.province !== 'Indonesia (national)')
+  .forEach((r) => povertyByProvince.set(r.province, { total: r.total_poverty_line, source: r.source }));
 
 // itemized_cost_of_living_by_city (16 cities) supersedes the older, sparser
 // numbeo_cost_breakdown_by_city (5 cities, kept in the source file only for
@@ -271,6 +289,45 @@ const countByProv = new Map();
 outRegions.forEach((r) => countByProv.set(r.provinceId, (countByProv.get(r.provinceId) || 0) + 1));
 outProvinces.forEach((p) => (p.regionCount = countByProv.get(p.id) || 0));
 
+// ---------- region-level living-cost overrides (kabupaten/kota rows) ----------
+// Most regions only get the province-level KHL/poverty-line figure (set on the
+// province object above). Where a source row is genuinely region-specific, set
+// it directly on the region too so the UI can show "this kabupaten's own
+// figure" instead of the province-wide one, and say so.
+const regionByGeoKey = new Map();
+outRegions.forEach((r) => {
+  r.povertyLine = null;
+  r.povertyLineSource = null;
+  r.khlTotal = null;
+  r.khlSource = null;
+  regionByGeoKey.set(norm(r.provinceName) + '|' + norm(r.geoName), r);
+});
+
+function attachRegionLevelRows(rows, { regionField, provinceField, valueField, sourceField, outValueKey, outSourceKey, label }) {
+  let matched = 0;
+  rows.forEach((row) => {
+    if (row[valueField] === null || row[valueField] === undefined) return;
+    const aliasKey = row[provinceField] + '|' + row[regionField];
+    const geoName = LIVING_COST_REGION_ALIAS[aliasKey] || row[regionField].replace(/^Kabupaten /, '');
+    const key = norm(row[provinceField]) + '|' + norm(geoName);
+    const region = regionByGeoKey.get(key);
+    if (!region) { console.warn(`[build] MISSING geo match for kab ${label}:`, row[provinceField], '/', row[regionField]); return; }
+    region[outValueKey] = row[valueField];
+    region[outSourceKey] = row[sourceField];
+    matched++;
+  });
+  console.log(`[build] region-level ${label} matches: ${matched}/${rows.length}`);
+}
+
+attachRegionLevelRows(
+  livingCosts.poverty_line_by_region.filter((r) => r.level === 'kabupaten/kota'),
+  { regionField: 'region', provinceField: 'province', valueField: 'total_poverty_line', sourceField: 'source', outValueKey: 'povertyLine', outSourceKey: 'povertyLineSource', label: 'poverty-line' },
+);
+attachRegionLevelRows(
+  livingCosts.khl_breakdown_by_region.filter((r) => r.level === 'kabupaten/kota'),
+  { regionField: 'region', provinceField: 'province', valueField: 'total_khl', sourceField: 'source', outValueKey: 'khlTotal', outSourceKey: 'khlSource', label: 'KHL' },
+);
+
 // ---------- national summary ----------
 const withRatio = outRegions.filter((r) => r.ratio !== null);
 const summary = {
@@ -289,6 +346,8 @@ const summary = {
     .map((r) => ({ id: r.id, name: r.name, province: r.provinceName, umk2026: r.umk2026 })),
   provincesWithKhl: outProvinces.filter((p) => p.khlTotal !== null).length,
   provincesWithPovertyLine: outProvinces.filter((p) => p.povertyLine !== null).length,
+  regionsWithOwnPovertyLine: outRegions.filter((r) => r.povertyLine !== null).length,
+  regionsWithOwnKhl: outRegions.filter((r) => r.khlTotal !== null).length,
 };
 
 const merged = {
@@ -300,7 +359,7 @@ const merged = {
     thresholds: THRESHOLDS,
     colors: COLORS,
     methodology: `Pay-gap ratio = latest available province-level average net wage (BPS Sakernas, employees only) divided by the region UMK (or provincial UMP where no separate UMK exists). Average wage data exists for ${summary.provincesWithWageData} of ${outProvinces.length} provinces and is NOT available at kabupaten/kota level, so all kabupaten/kota within a province share the same income reference figure. No median wage figures exist in the source data at any level.`,
-    affordabilityMethodology: `Salary affordability compares your monthly salary against each province's official KHL (Kebutuhan Hidup Layak / "decent living needs") figure from Kemnaker - the same benchmark wage councils use as an input to minimum-wage decisions. KHL is available for all ${summary.provincesWithKhl} of ${outProvinces.length} provinces, but only at province level (not kabupaten/kota), is a province-wide average (not adjusted for city vs. rural cost differences within it), and is a single-person "decent" budget, not a household one. BPS's Garis Kemiskinan (poverty line, a bare per-capita subsistence threshold - much lower than KHL) is shown alongside where available (${summary.provincesWithPovertyLine}/${outProvinces.length} provinces) as a second, stricter reference point.`,
+    affordabilityMethodology: `Salary affordability compares your monthly salary against each province's official KHL (Kebutuhan Hidup Layak / "decent living needs") figure from Kemnaker - the same benchmark wage councils use as an input to minimum-wage decisions. KHL is available for all ${summary.provincesWithKhl} of ${outProvinces.length} provinces, but almost entirely at province level only (${summary.regionsWithOwnKhl} kabupaten/kota, out of ${outRegions.length}, has its own KHL figure - Boyolali, from a regional news report, not a central compiler), is a province-wide average (not adjusted for city vs. rural cost differences within it), and is a single-person "decent" budget, not a household one. BPS's Garis Kemiskinan (poverty line, a bare per-capita subsistence threshold - much lower than KHL) is genuinely kabupaten/kota-level for most of the country: ${summary.regionsWithOwnPovertyLine} of ${outRegions.length} regions have their own BPS-published figure (region detail and compare pages show it directly; the rest fall back to their province's poverty line, and this is flagged in the UI).`,
   },
   summary,
   provinces: outProvinces,
