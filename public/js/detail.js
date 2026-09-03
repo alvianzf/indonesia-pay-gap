@@ -101,22 +101,19 @@ export async function renderDetail(container, regionId) {
     el('div', { id: 'detail-map' }),
   ]);
 
-  // itemized_cost_of_living_by_city covers 16 cities across 14 provinces.
-  // Prefer an EXACT match on the selected region first (e.g. selecting Kota
-  // Malang or Kota Bogor should show their own entry, not fall through to
-  // whichever city that province's source data happens to list first - which
-  // was the bug: it always picked Surabaya/Bandung for any Jawa Timur/Jawa
-  // Barat region). Only "kota" regions can exact-match: Numbeo's cities are
-  // proper cities, so a same-named "Kabupaten" (e.g. Kabupaten Bogor, which
-  // surrounds but is administratively distinct from Kota Bogor) must not
-  // claim a false exact match. Fall back to the province's first-listed city
-  // (its capital, per source order) as a "closest available" proxy.
+  // itemized_cost_of_living_by_city covers exactly 16 cities. Only show it when
+  // the selected region IS one of them - no province-level "closest available
+  // city" fallback. That fallback used to show e.g. Bandung's prices on Kota
+  // Bekasi's page (which has no Numbeo page of its own at all - confirmed in
+  // the source file's own notes), which reads as Bekasi-specific and isn't;
+  // better to show nothing than a wrong-feeling approximation. Only "kota"
+  // regions can match at all: Numbeo's cities are proper cities, so a same-
+  // named "Kabupaten" (e.g. Kabupaten Bogor, distinct from Kota Bogor) must
+  // not claim a match either.
   const normCity = (s) => s.toLowerCase().replace(/^kota |^kabupaten /, '').replace(/[^a-z0-9]/g, '');
-  const exactNumbeoMatch = region.type === 'kota'
+  const numbeoEntry = region.type === 'kota'
     ? data.merged.numbeoCities.find((c) => normCity(c.city) === normCity(region.name)) || null
     : null;
-  const numbeoEntry = exactNumbeoMatch || data.merged.numbeoCities.find((c) => c.provinceId === region.provinceId) || null;
-  const numbeoIsExact = exactNumbeoMatch !== null;
 
   container.appendChild(mapPanel);
 
@@ -136,9 +133,7 @@ export async function renderDetail(container, regionId) {
     numbeoEntry ? el('div', { class: 'panel' }, [
       el('h2', {}, `Sample local prices — ${numbeoEntry.city} (Numbeo)`),
       el('p', { style: 'font-size:11px;color:var(--text-dim);margin:0 0 10px' }, [
-        numbeoIsExact
-          ? `Crowdsourced Numbeo data specifically for ${region.name}. `
-          : `Crowdsourced, not specific to ${region.name} — shown as the closest available city sample for ${region.provinceName}. `,
+        `Crowdsourced Numbeo data specifically for ${region.name}. `,
         numbeoEntry.asOf ? `(${numbeoEntry.asOf}) ` : '',
         numbeoEntry.confidence || '',
       ]),
