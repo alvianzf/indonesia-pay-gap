@@ -150,7 +150,7 @@ main#app { max-width: 1400px; margin: 0 auto; padding: 20px 20px 40px; }
 .seg button.active { background: var(--accent-dim); color: #04170b; text-shadow: none; }
 
 #map, #afford-map { height: 560px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(57,255,143,.08); }
-#detail-map { height: 320px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(57,255,143,.08); }
+#detail-map { height: 440px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 0 30px rgba(57,255,143,.08); }
 
 .leaflet-container { background: #04090a !important; }
 .leaflet-control-attribution { background: rgba(5,10,6,.75) !important; color: var(--text-dim) !important; }
@@ -217,8 +217,6 @@ table.data-table td.num { text-align: right; font-variant-numeric: tabular-nums;
 .detail-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
 .detail-header h1 { font-size: 24px; margin: 0 0 4px; color: var(--text); text-shadow: 0 0 12px rgba(217,255,228,.2); }
 .detail-header .sub { color: var(--text-dim); font-size: 13px; }
-.detail-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(260px, 1fr); gap: 16px; align-items: start; }
-@media (max-width: 980px) { .detail-grid { grid-template-columns: 1fr; } }
 
 .source-list { font-size: 11.5px; color: var(--text-dim); list-style: none; padding: 0; margin: 6px 0 0; }
 .source-list li { margin-bottom: 4px; overflow-wrap: anywhere; }

@@ -106,7 +106,9 @@ export async function renderDetail(container, regionId) {
   // so find() naturally picks the more representative one.
   const numbeoEntry = data.merged.numbeoCities.find((c) => c.provinceId === region.provinceId) || null;
 
-  const chartsCol = el('div', {}, [
+  container.appendChild(mapPanel);
+
+  const chartsGrid = el('div', { class: 'chart-grid' }, [
     el('div', { class: 'panel' }, [
       el('h2', {}, 'Wage comparison'),
       el('div', { class: 'chart-box' }, el('canvas', { id: 'chart-compare' })),
@@ -136,7 +138,7 @@ export async function renderDetail(container, regionId) {
     ]),
   ]);
 
-  container.appendChild(el('div', { class: 'detail-grid' }, [mapPanel, chartsCol]));
+  container.appendChild(chartsGrid);
 
   // sibling table
   const tablePanel = el('div', { class: 'panel' }, [
